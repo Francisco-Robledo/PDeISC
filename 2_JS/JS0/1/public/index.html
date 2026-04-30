@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio Push Interactivo</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-light py-5">
+
+    <main class="container">
+        <section class="card shadow border-0">
+            <div class="card-header bg-dark text-white">
+                <h1 class="h3 mb-0 text-center">Ejercicio 1: push() Interactivo</h1>
+            </div>
+            
+            <div class="card-body">
+                <div class="row g-4 text-center">
+                    
+                    <!-- Columna Frutas -->
+                    <div class="col-12 col-md-4">
+                        <div class="p-3 border rounded h-100 bg-white d-flex flex-column">
+                            <h2 class="h5 text-primary">Frutas</h2>
+                            <!-- Input y botón -->
+                            <div class="input-group mb-3">
+                                <input type="text" id="input-fruta" class="form-control" placeholder="Ej: Pera">
+                                <button class="btn btn-primary" id="btn-fruta">Agregar</button>
+                            </div>
+                            <!-- Donde se muestra el resultado -->
+                            <p id="frutas" class="fw-bold mb-0 text-muted mt-auto"></p>
+                        </div>
+                    </div>
+
+                    <!-- Columna Amigos -->
+                    <div class="col-12 col-md-4">
+                        <div class="p-3 border rounded h-100 bg-white d-flex flex-column">
+                            <h2 class="h5 text-success">Amigos</h2>
+                            <div class="input-group mb-3">
+                                <input type="text" id="input-amigo" class="form-control" placeholder="Ej: Sofía">
+                                <button class="btn btn-success" id="btn-amigo">Agregar</button>
+                            </div>
+                            <p id="amigos" class="fw-bold mb-0 text-muted mt-auto"></p>
+                        </div>
+                    </div>
+
+                    <!-- Columna Números -->
+                    <div class="col-12 col-md-4">
+                        <div class="p-3 border rounded h-100 bg-white d-flex flex-column">
+                            <h2 class="h5 text-warning">Números</h2>
+                            <div class="input-group mb-3">
+                                <input type="number" id="input-numero" class="form-control" placeholder="Ej: 20">
+                                <button class="btn btn-warning" id="btn-numero">Agregar</button>
+                            </div>
+                            <p id="numeros" class="fw-bold text-muted mb-2 mt-auto"></p>
+                            <p id="mensaje" class="badge rounded-pill fs-6 mb-0 d-none"></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/script.js"></script>
+</body>
+</html>
