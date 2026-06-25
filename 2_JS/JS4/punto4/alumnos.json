@@ -1,0 +1,22 @@
+[
+  {
+    "nombre": "Ana García",
+    "curso": "Desarrollo Web",
+    "email": "ana.garcia@email.com"
+  },
+  {
+    "nombre": "Carlos López",
+    "curso": "JavaScript Avanzado",
+    "email": "carlos.lopez@email.com"
+  },
+  {
+    "nombre": "María Rodríguez",
+    "curso": "React.js",
+    "email": "maria.rod@email.com"
+  },
+  {
+    "nombre": "Juan Pérez",
+    "curso": "Node.js y Backend",
+    "email": "juan.perez@email.com"
+  }
+]

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Punto 2 - Formulario API</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Importar Axios mediante CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+  <!-- Contenedor principal con max-width de 1200px -->
+  <main class="container">
+    <header class="header">
+      <h1>Registro de Usuario</h1>
+      <!-- Botón para alternar el modo día/noche -->
+      <button id="theme-toggle" class="btn-theme">🌙 Modo Oscuro</button>
+    </header>
+
+    <section class="form-section">
+      <form id="user-form" novalidate>
+        <div class="input-group">
+          <label for="nombre">Nombre:</label>
+          <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan Pérez" required>
+          <span class="error-msg" id="error-nombre"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="email">Correo Electrónico:</label>
+          <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" required>
+          <span class="error-msg" id="error-email"></span>
+        </div>
+
+        <div class="button-group">
+          <button type="submit" id="btn-submit" class="btn-primary">Enviar</button>
+          <button type="button" id="btn-clear" class="btn-secondary">Limpiar</button>
+        </div>
+      </form>
+
+      <!-- Aquí se mostrará la respuesta de la API -->
+      <div id="response-container" class="hidden">
+        <p>Respuesta de la API:</p>
+        <h2 id="api-id-result"></h2>
+      </div>
+    </section>
+  </main>
+
+  <!-- Botón flotante para subir -->
+  <button id="scroll-top" class="scroll-top-btn hidden">⬆</button>
+
+  <script src="script.js"></script>
+</body>
+</html>

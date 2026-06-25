@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Usuarios</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>Directorio de Usuarios</h1>
+            <button id="btn-theme">Modo Día/Noche</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="controls">
+            <button id="btn-load">Cargar usuarios</button>
+            <button id="btn-clear" disabled>Borrar datos</button>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="input-search" placeholder="Buscar por nombre..." disabled>
+        </div>
+
+        <div id="users-list" class="users-grid">
+            <!-- Los usuarios cargados mediante JS se inyectarán aquí -->
+        </div>
+    </main>
+
+    <button id="btn-top" title="Subir al inicio">↑</button>
+
+    <script src="script.js"></script>
+</body>
+</html>

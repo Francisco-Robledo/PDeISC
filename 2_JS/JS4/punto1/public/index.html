@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punto 1 - Consumo de API</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Contenedor Principal con límite de ancho de 1200px -->
+    <div class="container">
+        
+        <!-- Encabezado con título y selector de modo oscuro -->
+        <header>
+            <h1>Directorio de Usuarios</h1>
+            <button id="theme-toggle" class="btn-theme" aria-label="Cambiar modo de color">🌙 Modo Noche</button>
+        </header>
+
+        <!-- Panel de Control con los botones solicitados -->
+        <section class="controls">
+            <button id="btn-fetch" class="btn btn-fetch">Cargar con fetch</button>
+            <button id="btn-axios" class="btn btn-axios">Cargar con axios</button>
+            <button id="btn-clear" class="btn btn-clear" disabled>Borrar datos</button>
+        </section>
+
+        <!-- Indicador de carga dinámico -->
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Cargando información de usuarios...</p>
+        </div>
+
+        <!-- Mensajes de error amigables -->
+        <div id="error-message" class="error-card hidden"></div>
+
+        <!-- Contenedor donde se mostrarán los resultados -->
+        <main id="users-grid" class="users-grid">
+            <p class="placeholder-text">No hay datos cargados. Presiona uno de los botones de carga para comenzar.</p>
+        </main>
+
+    </div>
+
+    <!-- Botón flotante para volver al inicio -->
+    <button id="scroll-top" class="scroll-top-btn hidden" aria-label="Subir al inicio">↑</button>
+
+    <!-- Inclusión de Axios mediante CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <!-- Script principal de la aplicación utilizando ES Modules -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>
