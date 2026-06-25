@@ -1,0 +1,187 @@
+/* =========================================
+   BOTÓN VOLVER ARRIBA
+   ========================================= */
+#btnVolverArriba {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    z-index: 99999;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    background-color: #0d6efd;
+    color: white;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#btnVolverArriba:hover {
+    background-color: #0b5ed7;
+    transform: scale(1.1);
+}
+
+/* =========================================
+   BOTÓN Y ESTILOS DE MODO OSCURO
+   ========================================= */
+#theme-toggle-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px; 
+    z-index: 99999;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#theme-toggle-btn:hover {
+    transform: scale(1.1);
+}
+
+body.dark-mode {
+    background-color: #1a1a1a !important;
+    color: #f0f0f0 !important;
+}
+
+body.dark-mode #theme-toggle-btn {
+    background-color: #f1c40f;
+    color: #333;
+}
+
+/* ADAPTACIÓN DEL FORMULARIO AL MODO OSCURO */
+body.dark-mode .form-control {
+    background-color: #2b2b2b;
+    color: #f0f0f0;
+    border-color: #444;
+}
+body.dark-mode .form-control:focus {
+    background-color: #333;
+    color: #fff;
+    border-color: #f1c40f;
+    box-shadow: 0 0 0 0.25rem rgba(241, 196, 15, 0.25);
+}
+body.dark-mode .form-control::placeholder {
+    color: #888;
+}/* =========================================
+   BOTÓN VOLVER ARRIBA
+   ========================================= */
+#btnVolverArriba {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    z-index: 99999;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    background-color: #0d6efd;
+    color: white;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#btnVolverArriba:hover {
+    background-color: #0b5ed7;
+    transform: scale(1.1);
+}
+
+/* =========================================
+   BOTÓN Y ESTILOS DE MODO OSCURO
+   ========================================= */
+#theme-toggle-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px; 
+    z-index: 99999;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#theme-toggle-btn:hover {
+    transform: scale(1.1);
+}
+
+body.dark-mode {
+    background-color: #1a1a1a !important;
+    color: #f0f0f0 !important;
+}
+
+body.dark-mode #theme-toggle-btn {
+    background-color: #f1c40f;
+    color: #333;
+}
+
+/* ADAPTACIÓN DEL FORMULARIO AL MODO OSCURO */
+body.dark-mode .form-control {
+    background-color: #2b2b2b;
+    color: #f0f0f0;
+    border-color: #444;
+}
+body.dark-mode .form-control:focus {
+    background-color: #333;
+    color: #fff;
+    border-color: #f1c40f;
+    box-shadow: 0 0 0 0.25rem rgba(241, 196, 15, 0.25);
+}
+body.dark-mode .form-control::placeholder {
+    color: #888;
+}
+/* Cuando el body tenga dark-mode, modifica las tarjetas de Bootstrap */
+body.dark-mode .card {
+    background-color: #2b2b2b !important;
+    color: #ffffff;
+}
+/* =========================================
+   ADAPTACIÓN DE COMPONENTES AL MODO OSCURO
+   ========================================= */
+
+/* Cambia las listas de preguntas frecuentes en Ayuda */
+body.dark-mode .list-group-item {
+    background-color: #2b2b2b !important;
+    color: #f0f0f0 !important;
+    border-color: #444 !important;
+}
+
+/* Cambia el bloque gris (Jumbotron) del Home (.bg-light) */
+body.dark-mode .bg-light {
+    background-color: #252525 !important;
+    color: #f0f0f0 !important;
+}
+
+/* Por si acaso usas Tarjetas (Cards) de Bootstrap en Servicios */
+body.dark-mode .card {
+    background-color: #2b2b2b !important;
+    color: #f0f0f0 !important;
+    border-color: #444 !important;
+}
