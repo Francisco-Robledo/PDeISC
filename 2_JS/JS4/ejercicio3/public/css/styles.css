@@ -1,0 +1,66 @@
+/* Restricción de 1200px */
+.container-max {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Transiciones Día/Noche */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Prolijidad visual en tarjetas e interactividad (Hover) */
+.user-card, .form-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 12px;
+}
+
+.user-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Estilos para el campo de búsqueda */
+#input-search {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+#input-search:disabled {
+    background-color: var(--bs-secondary-bg);
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Tema Oscuro nativo Bootstrap */
+[data-bs-theme="dark"] .card {
+    background-color: #2b3035;
+    border: 1px solid #495057;
+}
+
+[data-bs-theme="dark"] .user-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4) !important;
+}
+/* --- Botón Scroll to Top --- */
+#btn-scroll-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    z-index: 1050; /* Se asegura de estar sobre otros elementos */
+    font-size: 1.2rem;
+    
+    /* Estado inicial: Oculto y desplazado hacia abajo */
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none; /* Evita que sea clickeable cuando es invisible */
+    
+    /* Transición suave para aparecer/desaparecer */
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
+}
+
+/* Clase dinámica que agregaremos con JS cuando el usuario haga scroll */
+#btn-scroll-top.show-scroll {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
