@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directorio LocalStorage | Lab Web</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/styles.css"> </head>
+<body class="d-flex flex-column min-vh-100">
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top shadow-sm">
+        <div class="container">
+            <span class="navbar-brand fw-bold d-flex align-items-center gap-2">
+                <i class="bi bi-hdd-network-fill text-primary"></i> Lab Web | Directorio LocalStorage
+            </span>
+        </div>
+    </nav>
+
+    <main class="container my-5 flex-grow-1 fade-in">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold"><i class="bi bi-person-vcard-fill text-accent"></i> Registro de Personas</h2>
+            <p class="text-muted">Almacenando datos persistentes en el navegador (Local Storage) con validación JS.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="card card-pro p-3">
+                    <div class="card-body">
+                        <h5 class="fw-bold border-bottom pb-2 mb-4"><i class="bi bi-ui-checks"></i> Formulario Completo</h5>
+                        
+                        <form id="formPersona" novalidate>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Nombre/s</label>
+                                    <input type="text" class="form-control" name="nombre" id="nombre" required pattern="^[a-zA-ZÀ-ÿ\s]{2,}$">
+                                    <div class="invalid-feedback">Mínimo 2 letras.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Apellido/s</label>
+                                    <input type="text" class="form-control" name="apellido" id="apellido" required pattern="^[a-zA-ZÀ-ÿ\s]{2,}$">
+                                    <div class="invalid-feedback">Mínimo 2 letras.</div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold">Edad</label>
+                                    <input type="number" class="form-control" name="edad" id="edad" required min="0" max="120">
+                                    <div class="invalid-feedback">Edad inválida.</div>
+                                </div>
+                                <div class="col-md-8">
+                                    <label class="form-label small fw-bold">Fecha de Nacimiento</label>
+                                    <input type="date" class="form-control" name="fechaNacimiento" id="fechaNacimiento" required>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <label class="form-label small fw-bold">Sexo</label>
+                                    <select class="form-select" name="sexo" id="sexo" required>
+                                        <option value="" selected disabled>Seleccione...</option>
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Femenino">Femenino</option>
+                                        <option value="Otro">Otro</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-7">
+                                    <label class="form-label small fw-bold">Documento (DNI/Pasaporte)</label>
+                                    <input type="text" class="form-control" name="documento" id="documento" required minlength="6">
+                                    <div class="invalid-feedback">Ingrese un documento válido.</div>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <label class="form-label small fw-bold">Estado Civil</label>
+                                    <select class="form-select" name="estadoCivil" id="estadoCivil" required>
+                                        <option value="" selected disabled>Seleccione...</option>
+                                        <option value="Soltero/a">Soltero/a</option>
+                                        <option value="Casado/a">Casado/a</option>
+                                        <option value="Divorciado/a">Divorciado/a</option>
+                                        <option value="Viudo/a">Viudo/a</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-7">
+                                    <label class="form-label small fw-bold">Nacionalidad</label>
+                                    <input type="text" class="form-control" name="nacionalidad" id="nacionalidad" required placeholder="Ej: Argentina">
+                                </div>
+
+                                <div class="col-md-5">
+                                    <label class="form-label small fw-bold">Teléfono</label>
+                                    <input type="tel" class="form-control" name="telefono" id="telefono" required pattern="^[0-9+\-\s]{8,15}$" placeholder="Ej: 2235...">
+                                    <div class="invalid-feedback">Número inválido.</div>
+                                </div>
+                                <div class="col-md-7">
+                                    <label class="form-label small fw-bold">Correo Electrónico (Mail)</label>
+                                    <input type="email" class="form-control" name="mail" id="mail" required placeholder="ejemplo@correo.com">
+                                    <div class="invalid-feedback">Ingrese un correo válido con @.</div>
+                                </div>
+
+                                <div class="col-md-12 p-3 bg-body-tertiary rounded border mt-4">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-bold d-block">¿Tiene hijos?</label>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="tieneHijos" id="hijosSi" value="Si">
+                                                <label class="form-check-label" for="hijosSi">Sí</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="tieneHijos" id="hijosNo" value="No" checked>
+                                                <label class="form-check-label" for="hijosNo">No</label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-8 d-none" id="bloqueCantidadHijos">
+                                            <label class="form-label small fw-bold text-primary">¿Cuántos hijos tiene?</label>
+                                            <input type="number" class="form-control border-primary" name="cantidadHijos" id="cantidadHijos" min="1" placeholder="Ingrese cantidad">
+                                            <div class="invalid-feedback">Debe ser mínimo 1.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-primary w-100 mt-4" type="submit" id="btnGuardar">
+                                <i class="bi bi-cloud-arrow-up-fill"></i> Guardar en LocalStorage
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card card-pro h-100">
+                    <div class="card-header bg-transparent pt-4 pb-2 border-bottom-0 d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold m-0"><i class="bi bi-journal-bookmark-fill text-secondary"></i> Directorio</h5>
+                        <button class="btn btn-sm btn-outline-danger" id="btnLimpiarTodo"><i class="bi bi-trash"></i> Vaciar</button>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <p class="text-muted small">Listado de nombres completos almacenados.</p>
+                        
+                        <div id="emptyState" class="text-center text-muted py-5 my-auto">
+                            <i class="bi bi-database-x fs-1"></i>
+                            <p class="mb-0 mt-2">LocalStorage vacío.</p>
+                        </div>
+
+                        <ul class="list-group list-group-flush border-top" id="listaPersonas"></ul>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <button class="btn btn-dark rounded-circle shadow position-fixed bottom-0 start-0 m-4 d-flex align-items-center justify-content-center btn-flotante" id="themeToggleBtn"><i class="bi bi-moon-stars fs-5" id="themeIcon"></i></button>
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+        <div id="liveToast" class="toast align-items-center border-0 text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex"><div class="toast-body d-flex align-items-center gap-2"><i id="toastIcon" class="bi"></i><span id="toastMessage"></span></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./js/script.js"></script>
+</body>
+</html>

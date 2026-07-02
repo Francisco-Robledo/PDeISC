@@ -1,0 +1,105 @@
+:root {
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --text-title: #0f172a;
+    --accent-color: #4f46e5;
+    --border-subtle: #e2e8f0;
+}
+
+[data-bs-theme="dark"] {
+    --bg-main: #0f172a;
+    --bg-card: #1e293b;
+    --text-title: #f8fafc;
+    --accent-color: #6366f1;
+    --border-subtle: #334155;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-main) !important;
+    color: var(--text-title) !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* --- TARJETAS (Efecto Elevación) --- */
+.card-pro {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+.card-pro:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* --- BOTONES FLOTANTES --- */
+.btn-flotante {
+    width: 55px;
+    height: 55px;
+    z-index: 1050;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.btn-flotante:hover {
+    transform: scale(1.1);
+}
+
+/* --- FORMULARIOS --- */
+.form-control, .form-select {
+    background-color: transparent !important;
+    color: var(--text-title) !important;
+    border-color: var(--border-subtle);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--accent-color) !important;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15) !important;
+}
+
+/* Fix para el texto de las opciones en modo oscuro */
+[data-bs-theme="dark"] .form-select option {
+    background-color: var(--bg-card);
+    color: var(--text-title);
+}
+
+/* --- TABLAS (Ajustes para el Modo Oscuro) --- */
+.table {
+    color: var(--text-title);
+    border-color: var(--border-subtle);
+}
+
+.table-light th {
+    background-color: var(--bg-main) !important;
+    color: var(--text-title) !important;
+    border-bottom: 2px solid var(--border-subtle) !important;
+    font-weight: 600;
+}
+
+[data-bs-theme="dark"] .table-hover tbody tr:hover td {
+    background-color: rgba(99, 102, 241, 0.1);
+    color: var(--text-title);
+}
+
+/* --- ANIMACIONES --- */
+.fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Badges de la tabla un poco más espaciosos */
+.badge {
+    padding: 0.45em 0.65em;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
