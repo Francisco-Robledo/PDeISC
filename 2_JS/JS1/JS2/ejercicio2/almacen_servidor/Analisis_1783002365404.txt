@@ -1,0 +1,14 @@
+======================================
+    REPORTE DE FILTRADO AVANZADO
+======================================
+
+Total analizados: 10
+Números útiles: 2
+Números descartados: 8
+Efectividad (Porcentaje Útiles): 20.00%
+
+--- NÚMEROS ÚTILES (Ordenados Ascendente) ---
+[ 3, 3 ]
+
+--- NÚMEROS FACTORIALES ENCONTRADOS ---
+Ninguno.
