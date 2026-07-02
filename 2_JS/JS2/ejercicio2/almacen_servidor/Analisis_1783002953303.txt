@@ -1,0 +1,17 @@
+======================================
+    REPORTE DE FILTRADO DE NUMEROS
+======================================
+
+Total analizados: 10
+Numeros utiles: 2
+Numeros no utiles: 8
+Porcentaje de numeros utiles: 20.00%
+
+--- NUMEROS UTILES (orden ascendente) ---
+[ 3, 3 ]
+
+--- NUMEROS NO UTILES ---
+[ 312312, 12, 12, 12, 12, 213, 123, 123 ]
+
+--- NUMEROS FACTORIALES ENCONTRADOS ---
+Ninguno.
