@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Diccionario disponible para jugar El Ahorcado.">
+    <title>Palabras disponibles | El Ahorcado</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-game" aria-label="Navegacion principal">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/index.html">EL AHORCADO</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menu"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="menuPrincipal">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/index.html">Juego</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="/words.html">Palabras</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/index.html#posiciones">Posiciones</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container page-content">
+        <section class="hero text-center">
+            <p class="eyebrow">DICCIONARIO DEL JUEGO</p>
+            <h1>Palabras disponibles</h1>
+            <p class="lead">Revisa todas las palabras que puede seleccionar una partida antes de empezar.</p>
+            <a class="btn btn-primary" href="/index.html">Ir a jugar</a>
+        </section>
+        <section class="words-section" aria-labelledby="wordsTitle">
+            <div class="section-heading">
+                <div><p class="eyebrow">CATALOGO</p><h2 id="wordsTitle">Palabras cargadas: <span id="wordsTotal">0</span></h2></div>
+                <label class="visually-hidden" for="wordSearch">Buscar palabra</label>
+                <input id="wordSearch" class="form-control word-search" type="search" placeholder="Buscar una palabra" autocomplete="off">
+            </div>
+            <form id="addWordForm" class="add-word-form" novalidate>
+                <div>
+                    <label class="form-label" for="newWord">Agregar una palabra logica</label>
+                    <input id="newWord" class="form-control" type="text" maxlength="30" placeholder="Ejemplo: biblioteca" autocomplete="off" aria-describedby="newWordFeedback">
+                    <div id="newWordFeedback" class="invalid-feedback"></div>
+                    <p class="form-text">Solo letras (3 a 30), con al menos una vocal y sin repetir una ya existente.</p>
+                </div>
+                <button id="addWordButton" class="btn btn-outline-primary" type="submit">Agregar palabra</button>
+            </form>
+            <p id="wordsMessage" class="game-message" role="status">Cargando diccionario...</p>
+            <div id="wordsList" class="words-list" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <button id="themeToggle" class="floating-button theme-button" type="button" aria-label="Cambiar modo de color"><span aria-hidden="true">◐</span></button>
+    <button id="scrollTopButton" class="floating-button top-button" type="button" aria-label="Volver al inicio"><span aria-hidden="true">↑</span></button>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="/js/words.js"></script>
+</body>
+</html>
