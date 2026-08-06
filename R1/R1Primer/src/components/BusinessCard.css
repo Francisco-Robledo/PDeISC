@@ -1,0 +1,45 @@
+.business-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  height: 100%;
+}
+.business-card:hover {
+  box-shadow: 0 10px 25px -5px var(--accent-bg);
+  transform: translateY(-5px);
+}
+.card-image-container {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--accent);
+  margin-bottom: 16px;
+}
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.card-info h3 {
+  margin: 0;
+  font-size: 24px;
+  color: var(--text-h);
+  text-align: center;
+}
+.profession {
+  color: var(--text);
+  font-size: 14px;
+  margin-top: 8px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+}

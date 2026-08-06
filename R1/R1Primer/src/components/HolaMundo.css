@@ -1,0 +1,20 @@
+.hola-mundo {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  transition: transform 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hola-mundo:hover {
+  transform: translateY(-5px);
+}
+.hola-mundo h2 {
+  color: var(--accent);
+  margin-bottom: 8px;
+}
