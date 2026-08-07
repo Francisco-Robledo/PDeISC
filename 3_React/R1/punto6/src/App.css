@@ -1,0 +1,105 @@
+
+/* Contenedor principal con transición de tema */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Tema Oscuro (Noche) */
+.dark-theme {
+  background-color: #1a1a1a;
+  color: white;
+  --card-bg: #2a2a2a;
+  --card-border: #444;
+  --accent: #c084fc;
+  --accent-hover: rgba(192, 132, 252, 0.2);
+  --text-muted: #9ca3af;
+  --input-bg: #1f2028;
+}
+
+/* Tema Claro (Día) */
+.light-theme {
+  background-color: #f3f4f6;
+  color: #111827;
+  --card-bg: #ffffff;
+  --card-border: #d1d5db;
+  --accent: #9333ea;
+  --accent-hover: rgba(147, 51, 234, 0.1);
+  --text-muted: #6b7280;
+  --input-bg: #f9fafb;
+}
+
+/* Restricción de ancho a 1200px máximo */
+.content-wrapper {
+  max-width: 1200px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+/* Botón flotante Día/Noche obligatorio abajo a la izquierda */
+.theme-toggle-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--card-bg);
+  color: var(--accent);
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.2s, background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  border: 2px solid var(--accent);
+}
+.theme-toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Reset global */
+body { margin: 0; }
+
+
+.tic-tac-toe-container {
+  background: var(--card-bg); border: 1px solid var(--card-border); padding: 48px;
+  border-radius: 24px; box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1);
+  display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 800px;
+}
+.tic-tac-toe-container h3 { margin: 0 0 32px 0; font-size: 48px; }
+.game-status { margin-bottom: 32px; font-size: 28px; height: 32px; }
+.winner-msg { color: var(--accent); font-weight: bold; }
+.draw-msg { color: #ff758c; font-weight: bold; }
+.board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 40px; }
+.cell {
+  width: 150px; height: 150px; background: var(--input-bg); border: 4px solid var(--card-border);
+  border-radius: 16px; font-size: 72px; font-weight: bold; color: inherit;
+  display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s;
+}
+.cell:not(:disabled):hover { background: var(--accent-hover); border-color: var(--accent); transform: scale(1.05); }
+.cell.x { color: var(--accent); }
+.cell.o { color: #ff758c; }
+.reset-game-btn {
+  padding: 20px 40px; border-radius: 12px; border: none;
+  background: var(--accent); color: white; cursor: pointer; font-weight: bold; font-size: 24px;
+}
+
+@media (max-width: 768px) {
+  .tic-tac-toe-container { padding: 32px 16px; }
+  .tic-tac-toe-container h3 { font-size: 36px; }
+  .cell { width: 90px; height: 90px; font-size: 48px; border-radius: 12px; }
+  .board { gap: 10px; margin-bottom: 24px; }
+}
+    
