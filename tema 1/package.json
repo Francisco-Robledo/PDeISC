@@ -1,0 +1,30 @@
+{
+  "name": "gestor-gastos-personales",
+  "version": "1.0.0",
+  "description": "Sistema Web de Gestión de Gastos Personales con Node.js, Clases, Vectores, ES Modules, Fetch, Axios y Eventos",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "vectores",
+    "clases",
+    "getters",
+    "setters",
+    "fetch",
+    "axios",
+    "eventos"
+  ],
+  "author": "Desarrollador Web",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "morgan": "^1.10.0"
+  }
+}
