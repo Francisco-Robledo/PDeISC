@@ -1,0 +1,23 @@
+{
+  "name": "r4-portfolio-google-material",
+  "version": "1.0.0",
+  "description": "Portfolio SPA de Francisco Robledo con estética Google Material You, animaciones fluidas y persistencia en base de datos SQLite.",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev": "node -e \"const { spawn } = require('child_process'); spawn('npm', ['run', 'dev'], { cwd: './backend', stdio: 'inherit', shell: true }); spawn('npm', ['run', 'dev'], { cwd: './frontend', stdio: 'inherit', shell: true });\"",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start"
+  },
+  "keywords": [
+    "portfolio",
+    "react19",
+    "google-material-you",
+    "sqlite",
+    "typescript",
+    "framer-motion",
+    "tailwindcss"
+  ],
+  "author": "Francisco Robledo",
+  "license": "MIT"
+}

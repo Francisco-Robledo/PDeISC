@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punto 4 - API Alumnos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="contenedor-principal">
+        <header>
+            <h1>Gestión de Alumnos</h1>
+            <button id="btn-tema" class="btn-secundario">🌙 Modo Noche</button>
+        </header>
+
+        <main>
+            <div class="controles">
+                <button id="btn-cargar" class="btn-primario">Cargar alumnos</button>
+                <button id="btn-borrar" class="btn-peligro" disabled>Borrar datos</button>
+            </div>
+
+            <div id="contenedor-alumnos" class="grid-alumnos"></div>
+        </main>
+    </div>
+
+    <button id="btn-subir" class="btn-flotante" title="Subir al inicio">↑</button>
+
+    <script src="script.js"></script>
+</body>
+</html>

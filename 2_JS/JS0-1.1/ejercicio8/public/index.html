@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 8 | Lab Web</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top shadow-sm">
+        <div class="container">
+            <span class="navbar-brand fw-bold d-flex align-items-center gap-2">
+                <i class="bi bi-braces text-primary"></i> Lab Web | Ejercicio 8
+            </span>
+        </div>
+    </nav>
+
+    <main class="container my-5 flex-grow-1 fade-in">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold"><i class="bi bi-check2-circle text-success"></i> Ejercicio 8: Método includes()</h2>
+            <p class="text-muted">Comprobando la existencia estricta. Devuelve un valor <strong>Booleano (true / false)</strong>.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="card card-pro h-100 p-3">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold"><i class="bi bi-person-badge-fill text-danger"></i> 1. Roles</h5>
+                        <p class="text-muted small mb-3">Comprueba si el array contiene "admin".</p>
+                        
+                        <form id="formRoles" class="mb-3" novalidate>
+                            <div class="input-group input-group-sm has-validation">
+                                <input type="text" class="form-control" id="inputRoles" required pattern="^[a-zA-Z]+$" placeholder="Sumar rol...">
+                                <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-plus"></i></button>
+                            </div>
+                        </form>
+                        
+                        <div class="p-2 bg-body-tertiary rounded flex-grow-1 mb-2 border border-secondary-subtle">
+                            <div id="arrayRoles" class="d-flex flex-wrap gap-2"></div>
+                        </div>
+
+                        <div id="resRoles" class="alert py-2 small text-center d-none mb-3 fw-bold"></div>
+
+                        <button class="btn btn-danger w-100 mt-auto" id="btnCheckAdmin">
+                            <i class="bi bi-patch-question"></i> ¿Incluye "admin"?
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card card-pro h-100 p-3">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold"><i class="bi bi-palette-fill text-success"></i> 2. Colores</h5>
+                        <p class="text-muted small mb-3">Indica si existe el color "verde".</p>
+                        
+                        <form id="formColores" class="mb-3" novalidate>
+                            <div class="input-group input-group-sm has-validation">
+                                <input type="text" class="form-control" id="inputColores" required pattern="^[a-zA-Z]+$" placeholder="Sumar color...">
+                                <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-plus"></i></button>
+                            </div>
+                        </form>
+                        
+                        <div class="p-2 bg-body-tertiary rounded flex-grow-1 mb-2 border border-secondary-subtle">
+                            <div id="arrayColores" class="d-flex flex-wrap gap-2"></div>
+                        </div>
+
+                        <div id="resColores" class="alert py-2 small text-center d-none mb-3 fw-bold"></div>
+
+                        <button class="btn btn-success text-white w-100 mt-auto" id="btnCheckVerde">
+                            <i class="bi bi-patch-question"></i> ¿Incluye "verde"?
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card card-pro h-100 p-3">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold"><i class="bi bi-shield-lock-fill text-primary"></i> 3. Únicos</h5>
+                        <p class="text-muted small mb-3">Verifica si el número existe antes de sumarlo.</p>
+                        
+                        <form id="formNumerosAgregar" class="mb-3" novalidate>
+                            <div class="input-group input-group-sm has-validation">
+                                <input type="number" class="form-control" id="inputNumeros" required placeholder="Ingresá número (ej: 10)...">
+                                <button class="btn btn-primary" type="submit" id="btnGuardia"><i class="bi bi-plus-circle"></i> Agregar</button>
+                                <div class="invalid-feedback">Debe ser numérico.</div>
+                            </div>
+                        </form>
+                        
+                        <div class="p-2 bg-body-tertiary rounded flex-grow-1 mb-2 border border-secondary-subtle">
+                            <div id="arrayNumeros" class="d-flex flex-wrap gap-2"></div>
+                        </div>
+
+                        <div class="alert alert-info py-2 small text-center mb-0 mt-auto">
+                            <i class="bi bi-info-circle"></i> Intenta agregar el <strong>10</strong> o <strong>20</strong> para probar el bloqueo.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <button class="btn btn-dark rounded-circle shadow position-fixed bottom-0 start-0 m-4 d-flex align-items-center justify-content-center btn-flotante" id="themeToggleBtn"><i class="bi bi-moon-stars fs-5" id="themeIcon"></i></button>
+    <button class="btn btn-primary rounded-circle shadow position-fixed bottom-0 end-0 m-4 d-flex align-items-center justify-content-center btn-flotante d-none" id="scrollTopBtn"><i class="bi bi-arrow-up fs-5"></i></button>
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+        <div id="liveToast" class="toast align-items-center border-0 text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex"><div class="toast-body d-flex align-items-center gap-2"><i id="toastIcon" class="bi"></i><span id="toastMessage"></span></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+/* Variables globales para soportar modo Día/Noche dinámico */
+:root {
+    --bg-color: #f4f7f6;
+    --container-bg: #ffffff;
+    --text-color: #2c3e50;
+    --text-muted: #7f8c8d;
+    --border-color: #e2e8f0;
+    --primary-fetch: #3498db;
+    --primary-fetch-hover: #2980b9;
+    --primary-axios: #2ecc71;
+    --primary-axios-hover: #27ae60;
+    --danger-color: #e74c3c;
+    --danger-color-hover: #c0392b;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="dark"] {
+    --bg-color: #1a202c;
+    --container-bg: #2d3748;
+    --text-color: #f7fafc;
+    --text-muted: #a0aec0;
+    --border-color: #4a5568;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+}
+
+/* Estilos Base y Layout Responsivo */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* Contenedor principal limitado a 1200px máximo y centrado */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: var(--container-bg);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+}
+
+/* Encabezado */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 15px;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+/* Botón de tema */
+.btn-theme {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-theme:hover {
+    background-color: var(--bg-color);
+}
+
+/* Controles / Botones de acción */
+.controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: white;
+    flex: 1;
+    min-width: 160px;
+    text-align: center;
+}
+
+.btn:disabled {
+    background-color: var(--border-color) !important;
+    color: var(--text-muted);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.btn-fetch { background-color: var(--primary-fetch); }
+.btn-fetch:not(:disabled):hover { background-color: var(--primary-fetch-hover); }
+
+.btn-axios { background-color: var(--primary-axios); }
+.btn-axios:not(:disabled):hover { background-color: var(--primary-axios-hover); }
+
+.btn-clear { background-color: var(--danger-color); }
+.btn-clear:not(:disabled):hover { background-color: var(--danger-color-hover); }
+
+/* Estado de Carga (Spinner) */
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin: 40px 0;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border-color);
+    border-top: 4px solid var(--primary-fetch);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Grid de Usuarios (Responsivo) */
+.users-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.placeholder-text {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 40px 0;
+}
+
+/* Tarjetas de Usuario */
+.user-card {
+    background-color: var(--container-bg);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+}
+
+.user-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+.user-card p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    word-break: break-all;
+}
+
+/* Tarjeta de Error */
+.error-card {
+    background-color: rgba(231, 76, 60, 0.1);
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Clases Utilitarias */
+.hidden {
+    display: none !important;
+}
+
+/* Botón flotante para subir al inicio */
+.scroll-top-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--text-color);
+    color: var(--container-bg);
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scroll-top-btn:hover {
+    transform: translateY(-3px);
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 600px) {
+    body { padding: 10px; }
+    .container { padding: 15px; }
+    header { flex-direction: column; gap: 15px; text-align: center; }
+    .controls { flex-direction: column; }
+    .btn { width: 100%; }
+}

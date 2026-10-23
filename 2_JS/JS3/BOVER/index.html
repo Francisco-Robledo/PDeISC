@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BOVER: Superclasico Arcade</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css?v=12">
+</head>
+<body>
+
+    <div id="app-container">
+
+<!-- PANTALLA 1: MENU PRINCIPAL -->
+<div id="main-menu" class="screen active">
+    <img src="assets/img/LOGO.png" alt="Logo Boyer" class="menu-logo">
+    
+    <button id="btn-to-setup" class="btn btn-arcade btn-xl">JUGAR</button>
+    <button id="btn-to-ranking" class="btn btn-arcade btn-xl">RANKING</button>
+    <button id="btn-to-credits" class="btn btn-arcade btn-xl">CREDITOS</button>
+</div>
+
+        <!-- PANTALLA 2: PREPARAR PARTIDA Y TUTORIAL -->
+        <div id="setup-screen" class="screen hidden">
+            <div class="split-layout">
+                <div class="panel">
+                    <h2 class="panel-title glow-green">PREPARAR PARTIDA</h2>
+
+                    <div class="toggle-group">
+                        <button id="btn-1p" class="btn toggle-btn active">1 jugador</button>
+                        <button id="btn-2p" class="btn toggle-btn">2 jugadores</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nombre jugador 1</label>
+                        <input type="text" id="p1-name" placeholder="Ej: Nico" maxlength="10">
+                        <select id="p1-team" class="team-select">
+                            <option value="boca">Boca Juniors</option>
+                            <option value="river">River Plate</option>
+                        </select>
+                    </div>
+
+                    <div id="p2-container" class="form-group hidden">
+                        <label>Nombre jugador 2</label>
+                        <input type="text" id="p2-name" placeholder="Ej: Sofi" maxlength="10">
+                        <select id="p2-team" class="team-select">
+                            <option value="river">River Plate</option>
+                            <option value="boca">Boca Juniors</option>
+                        </select>
+                    </div>
+
+                    <button id="btn-start" class="btn btn-red btn-large" style="width: 100%; margin-top: 20px;">COMENZAR</button>
+                    <button id="btn-back-setup" class="btn btn-large" style="width: 100%; margin-top: 15px;">VOLVER AL MENU</button>
+                </div>
+
+                <div class="panel">
+                    <h2 class="panel-title glow-red">TUTORIAL</h2>
+                    <p class="tutorial-text"><span class="highlight-red">1 jugador:</span> W A S D o flechas para moverte.</p>
+                    <p class="tutorial-text"><span class="highlight-red">2 jugadores:</span> J1 usa W A S D y J2 usa las flechas.</p>
+                    <hr class="separator">
+                    <p class="tutorial-text">Come los puntos blancos para sumar. Los <span class="glow-yellow">Penales (dorados)</span> valen 50 pts.</p>
+                    <p class="tutorial-text">El <span class="highlight-green">Arbitro (esquinas)</span> asusta a los Torneos y permite comerlos por 200 pts.</p>
+                    <p class="tutorial-text">Cuidado con el <span class="glow-yellow">Fideo Di Maria</span>. Es rapido pero vale 500 puntos si lo agarras asustado.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANTALLA 3: RANKING -->
+        <div id="ranking-screen" class="screen hidden">
+            <div class="panel panel-wide">
+                <h2 class="panel-title glow-green">RANKING</h2>
+                <div class="action-row">
+                    <button id="btn-clear-history" class="btn">LIMPIAR HISTORIAL</button>
+                    <button id="btn-back-ranking" class="btn btn-red">VOLVER</button>
+                </div>
+
+                <h3 class="section-title glow-yellow">MEJORES PARTIDAS</h3>
+                <div class="table-container">
+                    <table class="ranking-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Modo</th>
+                                <th>Equipo / Jugador</th>
+                                <th>Puntaje</th>
+                                <th>Tiempo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-table-body">
+                            <!-- JS inyecta filas aca -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANTALLA 4: CREDITOS -->
+        <div id="credits-screen" class="screen hidden">
+            <div class="panel panel-wide top-border-rainbow">
+                <h2 class="panel-title glow-yellow">CREDITOS</h2>
+                <p class="tutorial-text"><strong>Proyecto:</strong> BOVER Superclasico.</p>
+                <p class="tutorial-text"><strong>Tecnologias:</strong> HTML, CSS, JavaScript y Node.js.</p>
+                <p class="tutorial-text"><strong>Idea:</strong> Mecanicas clasicas fusionadas con folclore del futbol argentino.</p>
+                <h3 class="section-title glow-green">DESARROLLADORES</h3>
+                <div class="credits-developers">
+                    <article class="developer-card">
+                        <img src="assets/img/credits-rivas.jpg" alt="Desarrollador Rivas">
+                        <span>RIVAS</span>
+                    </article>
+                    <article class="developer-card">
+                        <img src="assets/img/credits-robledo.jpg" alt="Desarrollador Robledo">
+                        <span>ROBLEDO</span>
+                    </article>
+                </div>
+                <button id="btn-back-credits" class="btn btn-red" style="margin-top: 30px;">VOLVER</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA 5: EL JUEGO ACTIVO -->
+        <div id="game-screen" class="screen hidden">
+            <div class="game-layout">
+                <div class="touch-controls touch-controls-j1" aria-label="Controles jugador 1">
+                    <span class="control-label">J1</span>
+                    <button class="touch-btn touch-up" data-player="1" data-direction="UP" aria-label="J1 arriba">UP</button>
+                    <button class="touch-btn touch-left" data-player="1" data-direction="LEFT" aria-label="J1 izquierda">L</button>
+                    <button class="touch-btn touch-right" data-player="1" data-direction="RIGHT" aria-label="J1 derecha">R</button>
+                    <button class="touch-btn touch-down" data-player="1" data-direction="DOWN" aria-label="J1 abajo">DN</button>
+                </div>
+
+                <div class="game-stage">
+                    <div class="game-actions">
+                        <button id="btn-pause-game" class="btn game-action-btn">PAUSA</button>
+                        <button id="btn-game-menu" class="btn game-action-btn">MENU</button>
+                        <button id="btn-fullscreen-game" class="btn game-action-btn">PANTALLA</button>
+                    </div>
+
+                    <div id="hud" class="panel panel-hud">
+                        <div class="stats-box">
+                            <span>Nivel: <span id="level-display" class="glow-green">1</span></span>
+                            <span>Vidas: <span id="lives-display">***</span></span>
+                            <div class="level-track" aria-label="Progreso de niveles">
+                                <span class="level-step active" data-level-step="1">1</span>
+                                <span class="level-step" data-level-step="2">2</span>
+                                <span class="level-step" data-level-step="3">3</span>
+                                <span class="level-step" data-level-step="4">4</span>
+                                <span class="level-step" data-level-step="5">5</span>
+                                <span class="level-step" data-level-step="6">6</span>
+                            </div>
+                            <span>Tiempo: <span id="time-display" class="glow-green">00:00</span></span>
+                        </div>
+                        <div class="score-box">
+                            <span>J1 (<span id="name-p1">P1</span>): <span id="score-p1">0</span></span>
+                            <span id="score-p2-container" class="hidden">J2 (<span id="name-p2">P2</span>): <span id="score-p2">0</span></span>
+                            <span>Record: <span id="high-score" class="glow-yellow">0</span></span>
+                        </div>
+                    </div>
+
+                    <div id="canvas-container">
+                        <canvas id="gameCanvas"></canvas>
+                        <div id="pause-overlay" class="overlay hidden">
+                            <p>PARTIDO EN PAUSA<br>Presiona una tecla o boton</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="touch-controls touch-controls-j2" aria-label="Controles jugador 2">
+                    <span class="control-label">J2</span>
+                    <button class="touch-btn touch-up" data-player="2" data-direction="UP" aria-label="J2 arriba">UP</button>
+                    <button class="touch-btn touch-left" data-player="2" data-direction="LEFT" aria-label="J2 izquierda">L</button>
+                    <button class="touch-btn touch-right" data-player="2" data-direction="RIGHT" aria-label="J2 derecha">R</button>
+                    <button class="touch-btn touch-down" data-player="2" data-direction="DOWN" aria-label="J2 abajo">DN</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="confirm-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+            <div class="modal-panel">
+                <h2 id="confirm-title" class="panel-title glow-red">BORRAR HISTORIAL</h2>
+                <p id="confirm-message" class="tutorial-text">Seguro que queres borrar el historial?</p>
+                <div class="modal-actions">
+                    <button id="btn-confirm-yes" class="btn btn-red">BORRAR</button>
+                    <button id="btn-confirm-no" class="btn">CANCELAR</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="orientation-lock">
+            <div class="orientation-panel">
+                <h2 class="glow-yellow">GIRA EL DISPOSITIVO</h2>
+                <p>Este juego se usa en modo horizontal.</p>
+            </div>
+        </div>
+
+        <!-- PANTALLA 6: GAME OVER -->
+        <div id="game-over-screen" class="screen hidden">
+            <div class="panel panel-small" style="text-align: center;">
+                <h2 class="panel-title glow-red" style="font-size: 1.8rem;">FIN DEL PARTIDO</h2>
+                <div class="game-over-stats">
+                    <p class="tutorial-text">Puntaje Total:<br><span id="final-score" class="glow-yellow" style="font-size: 1.5rem;">0</span></p>
+                    <p class="tutorial-text">Tiempo de Juego: <span id="final-time" class="glow-green">00:00</span></p>
+                    <p id="new-record-panel" class="hidden glow-yellow" style="margin-top: 15px; font-size: 1rem;">NUEVO RECORD DE LA FECHA</p>
+                </div>
+                <button id="btn-restart" class="btn btn-red btn-large" style="width: 100%; margin-top: 20px;">VOLVER A JUGAR</button>
+                <button id="btn-menu" class="btn btn-large" style="width: 100%; margin-top: 15px;">MENU PRINCIPAL</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/game-config.js?v=12"></script>
+    <script src="js/assets-audio.js?v=12"></script>
+    <script src="js/storage.js?v=12"></script>
+    <script src="js/player.js?v=12"></script>
+    <script src="js/ghost.js?v=12"></script>
+    <script src="js/game.js?v=12"></script>
+    <script src="js/game-render.js?v=12"></script>
+    <script src="js/main.js?v=12"></script>
+</body>
+</html>

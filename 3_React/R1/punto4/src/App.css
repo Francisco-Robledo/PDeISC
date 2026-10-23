@@ -1,0 +1,120 @@
+
+/* Contenedor principal con transición de tema */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Tema Oscuro (Noche) */
+.dark-theme {
+  background-color: #1a1a1a;
+  color: white;
+  --card-bg: #2a2a2a;
+  --card-border: #444;
+  --accent: #c084fc;
+  --accent-hover: rgba(192, 132, 252, 0.2);
+  --text-muted: #9ca3af;
+  --input-bg: #1f2028;
+}
+
+/* Tema Claro (Día) */
+.light-theme {
+  background-color: #f3f4f6;
+  color: #111827;
+  --card-bg: #ffffff;
+  --card-border: #d1d5db;
+  --accent: #9333ea;
+  --accent-hover: rgba(147, 51, 234, 0.1);
+  --text-muted: #6b7280;
+  --input-bg: #f9fafb;
+}
+
+/* Restricción de ancho a 1200px máximo */
+.content-wrapper {
+  max-width: 1200px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+/* Botón flotante Día/Noche obligatorio abajo a la izquierda */
+.theme-toggle-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--card-bg);
+  color: var(--accent);
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.2s, background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  border: 2px solid var(--accent);
+}
+.theme-toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Reset global */
+body { margin: 0; }
+
+
+.todo-list {
+  background: var(--card-bg); border: 1px solid var(--card-border); padding: 48px;
+  border-radius: 16px; width: 100%; max-width: 800px; box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1);
+}
+.todo-list h3 { margin: 0 0 32px 0; text-align: center; font-size: 36px; }
+.todo-form { display: flex; gap: 16px; margin-bottom: 32px; }
+.todo-input {
+  flex-grow: 1; padding: 20px 24px; border-radius: 12px; font-size: 18px;
+  border: 2px solid var(--card-border); background: var(--input-bg); color: inherit; outline: none;
+}
+.todo-input:focus { border-color: var(--accent); }
+.todo-add-btn {
+  padding: 20px 32px; border-radius: 12px; border: none; font-size: 18px;
+  background: var(--accent); color: white; cursor: pointer; font-weight: bold;
+}
+.todo-items { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 16px; }
+.todo-item { background: var(--input-bg); padding: 20px 24px; border-radius: 12px; font-size: 20px; display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 40px; }
+.task-label { display: flex; align-items: center; gap: 16px; cursor: pointer; margin: 0; flex-grow: 1; word-break: break-word; }
+.todo-item input[type="checkbox"] { width: 24px; height: 24px; cursor: pointer; flex-shrink: 0; }
+.todo-item.completed .task-text { text-decoration: line-through; color: var(--text-muted); }
+.task-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.icon-btn { background: none; border: none; font-size: 24px; cursor: pointer; transition: transform 0.2s; padding: 4px; border-radius: 8px; }
+.icon-btn:hover { background: var(--card-border); transform: scale(1.1); }
+.delete-confirm, .edit-mode { display: flex; width: 100%; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+.action-btns { display: flex; gap: 8px; }
+.btn-confirm { background: #10b981; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; }
+.btn-cancel { background: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; }
+.edit-input { padding: 12px; font-size: 18px; flex-grow: 1; }
+.empty-msg { text-align: center; color: var(--text-muted); font-style: italic; font-size: 18px; }
+
+@media (max-width: 768px) {
+  .todo-list { padding: 32px 20px; }
+  .todo-list h3 { font-size: 28px; }
+  .todo-form { flex-direction: column; }
+  .todo-input { font-size: 16px; padding: 16px; }
+  .todo-add-btn { font-size: 16px; padding: 16px; width: 100%; }
+  .todo-item { padding: 16px; font-size: 16px; flex-direction: column; align-items: stretch; }
+  .task-label { align-items: flex-start; }
+  .todo-item input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; }
+  .task-actions { align-self: flex-end; }
+  .delete-confirm, .edit-mode { flex-direction: column; align-items: stretch; }
+  .action-btns { justify-content: space-between; }
+  .action-btns button { flex: 1; }
+}
+    

@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html lang="es" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador TXT | Lab Web</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top shadow-sm">
+        <div class="container">
+            <span class="navbar-brand fw-bold d-flex align-items-center gap-2">
+                <i class="bi bi-file-earmark-text-fill text-primary"></i> Lab Web | Exportador TXT
+            </span>
+        </div>
+    </nav>
+
+    <main class="container my-5 flex-grow-1 fade-in">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold"><i class="bi bi-123 text-accent"></i> Recolector Numerico</h2>
+            <p class="text-muted">Ingresa entre 10 y 20 numeros. Al finalizar, guarda los datos como archivo <code>.txt</code>.</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-5 col-md-6">
+                <div class="card card-pro p-3 mb-4">
+                    <div class="card-body">
+                        <h5 class="fw-bold border-bottom pb-2"><i class="bi bi-keyboard"></i> Panel de Ingreso</h5>
+                        
+                        <form id="formNumeros" class="mt-3" novalidate>
+                            <div class="input-group input-group-lg has-validation">
+                                <span class="input-group-text bg-transparent border-end-0 text-muted"><i class="bi bi-hash"></i></span>
+                                <input type="text" inputmode="decimal" class="form-control border-start-0" id="inputNumero" required placeholder="Ej: 42,5">
+                                <button class="btn btn-primary px-4" type="submit" id="btnAgregar">Agregar</button>
+                                <div class="invalid-feedback mt-2">Ingresa un numero valido.</div>
+                            </div>
+                        </form>
+
+                        <div class="mt-4">
+                            <div class="d-flex justify-content-between small fw-bold mb-1">
+                                <span id="textoEstado" class="text-danger">Minimo: 10</span>
+                                <span id="textoContador">0 / 20</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div id="barraProgreso" class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-success btn-lg w-100 shadow-sm d-flex align-items-center justify-content-center gap-2" id="btnExportarTXT" disabled>
+                    <i class="bi bi-download"></i> Descargar y guardar copia
+                </button>
+            </div>
+
+            <div class="col-lg-5 col-md-6">
+                <div class="card card-pro h-100 p-3">
+                    <div class="card-header bg-transparent border-0 pt-2 pb-0 d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold m-0"><i class="bi bi-eye text-secondary"></i> Vista Previa</h5>
+                        <button class="btn btn-sm btn-outline-danger" id="btnReset"><i class="bi bi-arrow-clockwise"></i> Reset</button>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <div id="emptyState" class="text-center text-muted py-5 my-auto border-dashed rounded">
+                            <i class="bi bi-inbox fs-1"></i>
+                            <p class="mb-0 mt-2">Aun no hay numeros.<br>Comenza a escribir.</p>
+                        </div>
+
+                        <div id="contenedorNumeros" class="d-flex flex-wrap gap-2 align-content-start"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="row justify-content-center mt-4">
+            <div class="col-lg-10">
+                <div class="card card-pro p-3">
+                    <div class="card-header bg-transparent border-0 pt-2 pb-0 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                        <h5 class="fw-bold m-0"><i class="bi bi-cloud-check text-primary"></i> Archivo del servidor</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-sm btn-outline-primary" id="btnCargarArchivo">
+                                <i class="bi bi-arrow-clockwise"></i> Cargar
+                            </button>
+                            <button class="btn btn-sm btn-primary" id="btnGuardarCambiosArchivo" disabled>
+                                <i class="bi bi-save"></i> Guardar cambios
+                            </button>
+                            <a class="btn btn-sm btn-outline-success disabled" id="btnDescargarServidor" href="/api/archivo-txt/descargar" download>
+                                <i class="bi bi-cloud-download"></i> Descargar
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <textarea id="editorArchivoServidor" class="form-control font-monospace" rows="12" placeholder="El TXT guardado en el servidor aparecera aca para verlo o modificarlo." disabled></textarea>
+                        <div class="d-flex justify-content-between mt-2 small text-muted">
+                            <span id="estadoArchivoServidor">Sin archivo cargado.</span>
+                            <span id="nombreArchivoServidor"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button class="btn btn-dark rounded-circle shadow position-fixed bottom-0 start-0 m-4 d-flex align-items-center justify-content-center btn-flotante" id="themeToggleBtn"><i class="bi bi-moon-stars fs-5" id="themeIcon"></i></button>
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+        <div id="liveToast" class="toast align-items-center border-0 text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex"><div class="toast-body d-flex align-items-center gap-2"><i id="toastIcon" class="bi"></i><span id="toastMessage"></span></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./js/script.js"></script>
+</body>
+</html>

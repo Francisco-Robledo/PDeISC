@@ -1,0 +1,96 @@
+
+/* Contenedor principal con transición de tema */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Tema Oscuro (Noche) */
+.dark-theme {
+  background-color: #1a1a1a;
+  color: white;
+  --card-bg: #2a2a2a;
+  --card-border: #444;
+  --accent: #c084fc;
+  --accent-hover: rgba(192, 132, 252, 0.2);
+  --text-muted: #9ca3af;
+  --input-bg: #1f2028;
+}
+
+/* Tema Claro (Día) */
+.light-theme {
+  background-color: #f3f4f6;
+  color: #111827;
+  --card-bg: #ffffff;
+  --card-border: #d1d5db;
+  --accent: #9333ea;
+  --accent-hover: rgba(147, 51, 234, 0.1);
+  --text-muted: #6b7280;
+  --input-bg: #f9fafb;
+}
+
+/* Restricción de ancho a 1200px máximo */
+.content-wrapper {
+  max-width: 1200px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+/* Botón flotante Día/Noche obligatorio abajo a la izquierda */
+.theme-toggle-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--card-bg);
+  color: var(--accent);
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.2s, background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  border: 2px solid var(--accent);
+}
+.theme-toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Reset global */
+body { margin: 0; }
+
+
+.hola-mundo {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  padding: 80px 40px;
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+.hola-mundo:hover { transform: translateY(-5px); }
+.hola-mundo h2 { color: var(--accent); margin-bottom: 24px; font-size: 64px; }
+.hola-mundo p { font-size: 24px; color: var(--text-muted); }
+
+@media (max-width: 768px) {
+  .hola-mundo { padding: 40px 20px; }
+  .hola-mundo h2 { font-size: 40px; }
+  .hola-mundo p { font-size: 18px; }
+}
+    

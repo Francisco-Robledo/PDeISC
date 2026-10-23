@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manipulación del DOM con Módulos</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar con botón de Modo Oscuro -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <span class="navbar-brand">Proyecto DOM</span>
+            <button id="themeToggle" class="btn btn-outline-secondary">Modo Oscuro</button>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="mb-4">Generador y Modificador de Nodos</h1>
+        
+        <div class="card mb-4">
+            <div class="card-body">
+                <button id="btnCreate" class="btn btn-primary me-2">Crear 5 Nodos</button>
+                <button id="btnModify" class="btn btn-warning" disabled>Modificar Atributos</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Nodos Generados</h3>
+                <!-- Aquí se inyectarán los enlaces <a> -->
+                <div id="nodesContainer" class="d-flex flex-column gap-2 p-3 border rounded bg-body-tertiary"></div>
+            </div>
+            <div class="col-md-6">
+                <h3>Registro de Cambios</h3>
+                <!-- Aquí se mostrarán los logs de los atributos modificados -->
+                <ul id="logContainer" class="list-group"></ul>
+            </div>
+        </div>
+        
+        <!-- Contenido extra para forzar el scroll -->
+        <div style="height: 1000px; padding-top: 50px;">
+            <p class="text-muted">Desplázate hacia abajo para probar el botón "Top Scroll".</p>
+        </div>
+    </div>
+
+    <!-- Botón Top Scroll -->
+    <button id="scrollTopBtn" class="btn btn-dark rounded-circle p-3">↑</button>
+
+    <!-- Script principal usando módulos -->
+    <script type="module" src="/js/main.js"></script>
+</body>
+</html>

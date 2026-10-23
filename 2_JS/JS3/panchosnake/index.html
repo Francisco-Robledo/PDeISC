@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pancho Snake</title>
+    <link rel="stylesheet" href="css/styles.css">
+    
+</head>
+<body>
+    <div class="app">
+        <header class="hero">
+            <img src="assets/img/logo.png" alt="Pancho Snake" class="logo" onerror="this.style.display='none'">
+            <div class="logo-fallback">Pancho Snake</div>
+        </header>
+
+        <main>
+            <section class="screen active main-menu-screen" id="menuScreen">
+                <div class="main-menu-card">
+                    <a class="cookpad-easter-egg" href="https://cookpad.com/ar/buscar/panchos" aria-label="Buscar recetas de panchos en Cookpad">
+                        <span>Recetas de panchos</span>
+                    </a>
+                    <button class="menu-option" id="playMenuButton" type="button">Jugar</button>
+                    <button class="menu-option" id="rankingMenuButton" type="button">Ranking</button>
+                    <button class="menu-option" id="creditsMenuButton" type="button">Creditos</button>
+                    
+                </div>
+            </section>
+
+            <section class="screen" id="startScreen">
+                <form class="start-panel" id="startForm" novalidate>
+                    <h1>Preparar Partida</h1>
+
+                    <div class="mode-selector" role="group" aria-label="Modo de juego">
+                        <label>
+                            <input type="radio" name="gameMode" value="1" checked>
+                            <span>1 jugador</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="gameMode" value="2">
+                            <span>2 jugadores</span>
+                        </label>
+                    </div>
+
+                    <label class="field">
+                        Nombre jugador 1
+                        <input type="text" id="playerOneName" maxlength="14" placeholder="Ej: Nico">
+                    </label>
+
+                    <label class="field hidden" id="playerTwoField">
+                        Nombre jugador 2
+                        <input type="text" id="playerTwoName" maxlength="14" placeholder="Ej: Sofi">
+                    </label>
+
+                    <p class="form-error" id="formError" aria-live="polite"></p>
+
+                    <button class="primary-button" type="submit">Comenzar</button>
+                    <button class="ghost-button" type="button" id="backFromPlayButton">Volver al menu</button>
+                </form>
+
+                <aside class="instructions">
+                    <h2>Tutorial</h2>
+                    <p><strong>1 jugador:</strong> W A S D o flechas. En celular/tablet aparecen botones en pantalla.</p>
+                    <p><strong>2 jugadores:</strong> jugador 1 usa W A S D y jugador 2 usa flechas.</p>
+                    <p>Junta aderezos para sumar puntos y estirar el pancho. La salsa especial revive a un jugador eliminado o funciona como segunda vida.</p>
+                    <p>Cada 200 puntos subis de nivel y el pancho acelera. El limite final es de 1000 puntos.</p>
+                </aside>
+            </section>
+
+            <section class="screen game-layout" id="gameScreen">
+                <div class="match-summary" id="matchSummary">
+                    Preparando partida...
+                </div>
+
+                <div class="score-panel" id="scorePanel"></div>
+
+                <div class="board-wrapper" id="boardWrapper">
+                    <canvas id="gameCanvas" width="640" height="640" aria-label="Mapa del juego Pancho Snake"></canvas>
+                    <div class="pause-badge hidden" id="pauseBadge">Pausa</div>
+                </div>
+
+                <div class="side-panel">
+                    <div class="record-card" id="recordPanel">
+                        <h3>Record</h3>
+                        <p>Todavia no hay record.</p>
+                    </div>
+
+                    <div class="game-actions">
+                        <button class="primary-button" id="pauseButton" type="button">Pausar</button>
+                        <button class="ghost-button" id="restartButton" type="button">Reiniciar</button>
+                        <button class="ghost-button" id="menuButton" type="button">Menu</button>
+                    </div>
+                </div>
+
+                <div class="direction-controls" id="directionControls" aria-label="Controles de direccion"></div>
+            </section>
+
+            <section class="screen" id="historyScreen">
+                <div class="history-panel">
+                    <h2>Ranking</h2>
+                    <div class="history-actions">
+                        <button class="ghost-button" id="clearHistoryButton" type="button">Limpiar historial</button>
+                        <button class="primary-button" id="backButton" type="button">Volver</button>
+                    </div>
+                    <div class="ranking-section">
+                        <h3>Mejores partidas</h3>
+                        <div id="rankingList"></div>
+                    </div>
+                    <div class="ranking-section">
+                        <h3>Historial de partidas</h3>
+                        <div id="historyList"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="screen" id="creditsScreen">
+                <div class="credits-panel">
+                    <h2>Creditos</h2>
+                    <div class="developer-grid" aria-label="Desarrolladores">
+                        <article class="developer-card">
+                            <img src="assets/img/credits-robledo.jpg" alt="Foto de Francisco Robledo" class="developer-photo">
+                            <div>
+                                <span class="developer-role">Desarrollador</span>
+                                <h3>Francisco Robledo</h3>
+                            </div>
+                        </article>
+                        <article class="developer-card">
+                            <img src="assets/img/credits-rivas.jpg" alt="Foto de Matias Rivas" class="developer-photo">
+                            <div>
+                                <span class="developer-role">Desarrollador</span>
+                                <h3>Matias Rivas</h3>
+                            </div>
+                        </article>
+                    </div>
+                    <p><strong>Proyecto:</strong> Pancho Snake.</p>
+                    <p><strong>Tecnologias:</strong> HTML, CSS, JavaScript, Canvas y LocalStorage.</p>
+                    <p><strong>Idea:</strong> Snake convertido en un juego de panchos, aderezos, eventos locos y ranking.</p>
+                    <p><strong>Sprites y musica:</strong> reemplazables desde las carpetas <code>assets/img</code> y <code>assets/sounds</code>.</p>
+                    <button class="primary-button" id="backFromCreditsButton" type="button">Volver</button>
+                </div>
+            </section>
+        </main>
+
+        <div class="modal hidden" id="endModal" role="dialog" aria-modal="true">
+            <div class="modal-content">
+                <h2 id="endTitle">Fin de la partida</h2>
+                <p id="endMessage"></p>
+                <button class="primary-button" id="playAgainButton" type="button">Jugar otra vez</button>
+                <button class="ghost-button" id="endMenuButton" type="button">Ir al menu</button>
+            </div>
+        </div>
+
+        <div class="orientation-lock" aria-hidden="true">
+            <div>
+                <strong>Gira el dispositivo</strong>
+                <span>Pancho Snake se juega mejor en horizontal.</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/game-config.js"></script>
+    <script src="js/game-utils.js"></script>
+    <script src="js/game-events.js"></script>
+    <script src="js/audio-service.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

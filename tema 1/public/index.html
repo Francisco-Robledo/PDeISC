@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Gestor de Gastos</title>
+
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Estilos complementarios responsivos -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Biblioteca AXIOS -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body class="bg-body-tertiary">
+
+  <!-- ========================================================================= -->
+  <!-- BARRA DE NAVEGACIÓN FIJA (Solo "Gestor de Gastos", 100% responsiva) -->
+  <!-- ========================================================================= -->
+  <nav class="navbar fixed-top border-bottom glass-navbar py-2">
+    <div class="container-xl px-3">
+      <!-- Marca -->
+      <a class="navbar-brand fw-bold d-flex align-items-center gap-2 m-0 text-decoration-none" href="#">
+        <div class="rounded-3 bg-primary text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 34px; height: 34px; min-width: 34px;">
+          <i class="fa-solid fa-wallet fs-6"></i>
+        </div>
+        <span class="fs-6 fs-sm-5 fw-bold text-body">Gestor de Gastos</span>
+      </a>
+
+      <!-- Acciones de Cabecera -->
+      <div class="d-flex align-items-center gap-2">
+        <button 
+          id="btnExportarJSON" 
+          type="button" 
+          class="btn btn-sm btn-outline-secondary d-none d-sm-inline-flex align-items-center gap-1.5"
+          title="Descargar datos en JSON">
+          <i class="fa-solid fa-file-arrow-down text-primary"></i>
+          <span>Exportar</span>
+        </button>
+
+        <button 
+          id="btnNuevoGasto" 
+          type="button" 
+          class="btn btn-sm btn-primary d-inline-flex align-items-center gap-1.5 shadow-sm px-2.5 px-sm-3">
+          <i class="fa-solid fa-plus"></i>
+          <span class="fw-semibold">Nuevo Gasto</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========================================================================= -->
+  <!-- CONTENIDO PRINCIPAL -->
+  <!-- ========================================================================= -->
+  <main class="container-xl px-3 py-3 py-md-4 flex-grow-1">
+
+    <!-- ALERTA DE PRESUPUESTO SUPERADO -->
+    <div id="badgeAlertaPresupuesto" class="d-none"></div>
+
+    <!-- TARJETAS DE RESUMEN (Grid Responsivo: 2 col en móvil, 4 en desktop) -->
+    <section class="row g-2 g-sm-3 mb-3 mb-md-4">
+      
+      <!-- 1. Presupuesto Mensual (Clickeable: Ver más) -->
+      <div class="col-6 col-lg-3">
+        <div class="card h-100 border shadow-sm cursor-pointer gasto-card" id="cardPresupuesto" role="button" tabindex="0" title="Toca para ver más y gestionar tu presupuesto">
+          <div class="card-body p-2 p-sm-3 d-flex flex-column justify-content-between">
+            <div class="d-flex align-items-center justify-content-between text-secondary mb-1">
+              <span class="metric-card-title fw-semibold text-truncate pe-1">
+                <i class="fa-solid fa-bullseye text-primary me-1"></i>Presupuesto
+              </span>
+              <span class="badge bg-primary-subtle text-primary rounded-pill" style="font-size: 0.65rem;">
+                Ver más <i class="fa-solid fa-chevron-right ms-0.5"></i>
+              </span>
+            </div>
+            <div id="resumenPresupuesto" class="metric-card-value fw-bold mb-0 text-body text-truncate">$0,00</div>
+            <small class="text-secondary d-block text-truncate" style="font-size: 0.7rem;">Toca para gestionar</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Total Gastado -->
+      <div class="col-6 col-lg-3">
+        <div class="card h-100 border shadow-sm">
+          <div class="card-body p-2 p-sm-3 d-flex flex-column justify-content-between">
+            <div class="d-flex align-items-center justify-content-between text-secondary mb-1">
+              <span class="metric-card-title fw-semibold text-truncate pe-1">
+                <i class="fa-solid fa-arrow-trend-up text-danger me-1"></i>Total Gastado
+              </span>
+              <span id="resumenPorcentaje" class="badge bg-secondary-subtle text-secondary rounded-pill" style="font-size: 0.65rem;">0%</span>
+            </div>
+            <div id="resumenTotal" class="metric-card-value fw-bold mb-0 text-body text-truncate">$0,00</div>
+            <small id="resumenCantidad" class="text-secondary d-block text-truncate" style="font-size: 0.7rem;">0 gastos</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Saldo Disponible -->
+      <div class="col-6 col-lg-3">
+        <div class="card h-100 border shadow-sm">
+          <div class="card-body p-2 p-sm-3 d-flex flex-column justify-content-between">
+            <div class="d-flex align-items-center justify-content-between text-secondary mb-1">
+              <span class="metric-card-title fw-semibold text-truncate pe-1">
+                <i class="fa-solid fa-piggy-bank text-success me-1"></i>Disponible
+              </span>
+              <small class="text-secondary" style="font-size: 0.65rem;">Restante</small>
+            </div>
+            <div id="resumenSaldo" class="metric-card-value fw-bold mb-0 text-success text-truncate">$0,00</div>
+            <small class="text-success fw-medium d-block text-truncate" style="font-size: 0.7rem;">En tiempo real</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Gasto Promedio -->
+      <div class="col-6 col-lg-3">
+        <div class="card h-100 border shadow-sm">
+          <div class="card-body p-2 p-sm-3 d-flex flex-column justify-content-between">
+            <div class="d-flex align-items-center justify-content-between text-secondary mb-1">
+              <span class="metric-card-title fw-semibold text-truncate pe-1">
+                <i class="fa-solid fa-chart-simple text-info me-1"></i>Promedio
+              </span>
+              <small class="text-secondary" style="font-size: 0.65rem;">Por gasto</small>
+            </div>
+            <div id="resumenPromedio" class="metric-card-value fw-bold mb-0 text-body text-truncate">$0,00</div>
+            <small class="text-secondary d-block text-truncate" style="font-size: 0.7rem;">Media del vector</small>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- BARRA DE CONSUMO DE PRESUPUESTO -->
+    <section class="card border shadow-sm mb-3 mb-md-4">
+      <div class="card-body p-2 p-sm-3">
+        <div class="d-flex align-items-center justify-content-between small text-secondary mb-1.5" style="font-size: 0.78rem;">
+          <span class="fw-semibold text-body">
+            <i class="fa-solid fa-gauge-high text-primary me-1"></i>Consumo del Presupuesto
+          </span>
+          <span class="small">Control automático</span>
+        </div>
+        <div class="progress" style="height: 8px;">
+          <div id="barraProgresoPresupuesto" class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GRID PRINCIPAL -->
+    <div class="row g-3 g-md-4">
+
+      <!-- ===================================================================== -->
+      <!-- COLUMNA IZQUIERDA: FILTROS Y LISTA DE GASTOS (8 cols) -->
+      <!-- ===================================================================== -->
+      <div class="col-12 col-lg-8">
+        
+        <!-- BARRA DE FILTROS TOTALMENTE RESPONSIVA -->
+        <div class="card border shadow-sm mb-3">
+          <div class="card-body p-3">
+            
+            <!-- Fila 1: Buscador y Selectores -->
+            <div class="row g-2 mb-2">
+              <!-- Búsqueda -->
+              <div class="col-12 col-md-6">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text bg-body border-end-0 text-secondary">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </span>
+                  <input 
+                    type="text" 
+                    id="inputBusqueda" 
+                    class="form-control border-start-0 ps-1" 
+                    placeholder="Buscar por título o descripción...">
+                </div>
+              </div>
+
+              <!-- Categoría -->
+              <div class="col-6 col-md-3">
+                <select id="filtroCategoria" class="form-select form-select-sm">
+                  <option value="Todas">Todas las categorías</option>
+                  <option value="Alimentación">Alimentación</option>
+                  <option value="Transporte">Transporte</option>
+                  <option value="Vivienda">Vivienda</option>
+                  <option value="Servicios">Servicios</option>
+                  <option value="Entretenimiento">Entretenimiento</option>
+                  <option value="Salud">Salud</option>
+                  <option value="Educación">Educación</option>
+                  <option value="Otros">Otros</option>
+                </select>
+              </div>
+
+              <!-- Orden -->
+              <div class="col-6 col-md-3">
+                <select id="filtroOrden" class="form-select form-select-sm">
+                  <option value="fecha_desc">Más recientes</option>
+                  <option value="fecha_asc">Más antiguos</option>
+                  <option value="monto_desc">Mayor monto</option>
+                  <option value="monto_asc">Menor monto</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Fila 2: Rango de Fechas y Reset -->
+            <div class="row g-2 align-items-center pt-2 border-top">
+              <div class="col-6 col-sm-3">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text px-1.5 text-secondary" style="font-size: 0.72rem;">Desde</span>
+                  <input type="date" id="filtroDesde" class="form-control px-1" style="font-size: 0.78rem;">
+                </div>
+              </div>
+
+              <div class="col-6 col-sm-3">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text px-1.5 text-secondary" style="font-size: 0.72rem;">Hasta</span>
+                  <input type="date" id="filtroHasta" class="form-control px-1" style="font-size: 0.78rem;">
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-6 d-flex align-items-center justify-content-between justify-content-sm-end gap-2 mt-2 mt-sm-0">
+                <span id="contadorResultados" class="badge bg-body-secondary text-secondary font-monospace" style="font-size: 0.72rem;">Cargando...</span>
+                <button id="btnLimpiarFiltros" type="button" class="btn btn-link btn-sm p-0 text-decoration-none text-primary" style="font-size: 0.8rem;">
+                  <i class="fa-solid fa-rotate-left me-1"></i>Restablecer
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CONTENEDOR DEL VECTOR DE GASTOS (Tarjetas clickeables) -->
+        <div id="listaGastos">
+          <!-- Renderizado dinámico -->
+        </div>
+
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- COLUMNA DERECHA: DISTRIBUCIÓN Y DIVISAS (4 cols) -->
+      <!-- ===================================================================== -->
+      <div class="col-12 col-lg-4">
+        
+        <!-- CARD: GASTOS POR CATEGORÍA -->
+        <div class="card border shadow-sm mb-3">
+          <div class="card-header bg-transparent py-2.5 px-3 border-bottom d-flex align-items-center justify-content-between">
+            <h6 class="fw-bold mb-0 text-body small">
+              <i class="fa-solid fa-chart-pie text-primary me-2"></i>Gastos por Categoría
+            </h6>
+            <small class="text-secondary" style="font-size: 0.7rem;">Distribución</small>
+          </div>
+          <div class="card-body p-3" id="desgloseCategorias">
+            <!-- Inyectado dinámicamente -->
+          </div>
+        </div>
+
+        <!-- CARD: EQUIVALENCIA EN DIVISAS -->
+        <div class="card border shadow-sm mb-3">
+          <div class="card-header bg-transparent py-2.5 px-3 border-bottom d-flex align-items-center justify-content-between">
+            <h6 class="fw-bold mb-0 text-body small">
+              <i class="fa-solid fa-coins text-warning me-2"></i>Equivalencia en Divisas
+            </h6>
+            <span class="badge bg-warning-subtle text-warning" style="font-size: 0.68rem;">En vivo</span>
+          </div>
+          <div class="card-body p-3" id="widgetDivisas">
+            <!-- Inyectado dinámicamente -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- BOTÓN FLOTANTE ABAJO IZQUIERDA: MODO OSCURO / CLARO -->
+  <!-- ========================================================================= -->
+  <button 
+    id="btnModoTema" 
+    type="button" 
+    class="btn btn-outline-secondary bg-body floating-btn-left shadow" 
+    title="Cambiar Modo Oscuro / Claro" 
+    aria-label="Cambiar Modo de Tema">
+    <i class="fa-solid fa-moon"></i>
+  </button>
+
+  <!-- ========================================================================= -->
+  <!-- BOTÓN FLOTANTE ABAJO DERECHA: TOP SCROLLING -->
+  <!-- ========================================================================= -->
+  <button 
+    id="btnScrollTop" 
+    type="button" 
+    class="btn btn-primary floating-btn-right shadow" 
+    title="Volver arriba" 
+    aria-label="Volver arriba">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: DETALLE DEL GASTO (POPUP AL TOCAR UN GASTO) -->
+  <!-- ========================================================================= -->
+  <div class="modal fade" id="modalDetalleGasto" tabindex="-1" aria-labelledby="detalleTitulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+        
+        <!-- Header con Categoría, ID y Cerrar -->
+        <div class="modal-header border-bottom py-2.5 px-3 d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center gap-2">
+            <span id="detalleCategoriaBadge" class="badge rounded-pill"></span>
+            <small class="text-secondary font-monospace" id="detalleIdGasto" style="font-size: 0.7rem;"></small>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body p-3 p-sm-4">
+          <!-- Monto Destacado -->
+          <div class="text-center py-2.5 px-3 mb-3 bg-body-secondary rounded-3 border">
+            <small class="text-secondary text-uppercase fw-semibold d-block" style="font-size: 0.68rem; letter-spacing: 0.05em;">Monto Registrado</small>
+            <h2 id="detalleMonto" class="fw-bold mb-0 text-body my-1"></h2>
+            <small class="text-secondary" style="font-size: 0.72rem;">Pesos Argentinos (ARS)</small>
+          </div>
+
+          <!-- Título Principal -->
+          <div class="mb-3">
+            <small class="text-secondary fw-semibold d-block mb-1 text-uppercase" style="font-size: 0.68rem; letter-spacing: 0.04em;">Concepto / Título</small>
+            <h5 id="detalleTitulo" class="fw-bold text-body mb-0"></h5>
+          </div>
+
+          <!-- Datos en Grid: Fecha y Método de Pago -->
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <div class="p-2.5 rounded-3 bg-body-tertiary border h-100">
+                <small class="text-secondary d-block mb-1" style="font-size: 0.7rem;">
+                  <i class="fa-regular fa-calendar text-primary me-1"></i>Fecha
+                </small>
+                <span id="detalleFecha" class="fw-semibold small text-body"></span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-2.5 rounded-3 bg-body-tertiary border h-100">
+                <small class="text-secondary d-block mb-1" style="font-size: 0.7rem;">
+                  <i class="fa-regular fa-credit-card text-primary me-1"></i>Método de Pago
+                </small>
+                <span id="detalleMetodoPago" class="fw-semibold small text-body"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Descripción / Observaciones -->
+          <div>
+            <small class="text-secondary fw-semibold d-block mb-1 text-uppercase" style="font-size: 0.68rem; letter-spacing: 0.04em;">Descripción / Detalle</small>
+            <div id="detalleDescripcion" class="p-2.5 rounded-3 bg-body-tertiary border small"></div>
+          </div>
+        </div>
+
+        <!-- Footer con Acciones: Eliminar y Cerrar -->
+        <div class="modal-footer border-top py-2 px-3 d-flex justify-content-between">
+          <button type="button" id="btnDetalleEliminar" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1.5">
+            <i class="fa-solid fa-trash-can"></i>
+            <span>Eliminar</span>
+          </button>
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: AÑADIR NUEVO GASTO (Únicamente placeholders, campos vacíos) -->
+  <!-- ========================================================================= -->
+  <div class="modal fade" id="modalGasto" tabindex="-1" aria-labelledby="modalTitulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content border-0 shadow-lg">
+        
+        <div class="modal-header border-bottom py-2.5 px-3">
+          <h6 class="modal-title fw-bold" id="modalTitulo">Añadir Nuevo Gasto</h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form id="formGasto">
+          <div class="modal-body p-3 p-sm-4">
+            
+            <!-- Título -->
+            <div class="mb-3">
+              <label for="campoTitulo" class="form-label small fw-semibold text-secondary">Título del Gasto *</label>
+              <input type="text" id="campoTitulo" class="form-control" placeholder="Ej: Supermercado Coto, Alquiler, Nafta..." required minlength="3">
+            </div>
+
+            <!-- Monto y Categoría -->
+            <div class="row g-2 mb-3">
+              <div class="col-12 col-sm-6">
+                <label for="campoMonto" class="form-label small fw-semibold text-secondary">Monto ($ ARS) *</label>
+                <input type="number" id="campoMonto" class="form-control" placeholder="Ej: 15000.00" min="0.01" step="0.01" required>
+              </div>
+
+              <div class="col-12 col-sm-6">
+                <label for="campoCategoria" class="form-label small fw-semibold text-secondary">Categoría *</label>
+                <select id="campoCategoria" class="form-select" required>
+                  <option value="" disabled selected>Selecciona una categoría...</option>
+                  <option value="Alimentación">Alimentación</option>
+                  <option value="Transporte">Transporte</option>
+                  <option value="Vivienda">Vivienda</option>
+                  <option value="Servicios">Servicios</option>
+                  <option value="Entretenimiento">Entretenimiento</option>
+                  <option value="Salud">Salud</option>
+                  <option value="Educación">Educación</option>
+                  <option value="Otros">Otros</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Fecha y Método de Pago -->
+            <div class="row g-2 mb-3">
+              <div class="col-12 col-sm-6">
+                <label for="campoFecha" class="form-label small fw-semibold text-secondary">Fecha *</label>
+                <input type="date" id="campoFecha" class="form-control" required placeholder="YYYY-MM-DD">
+              </div>
+
+              <div class="col-12 col-sm-6">
+                <label for="campoMetodoPago" class="form-label small fw-semibold text-secondary">Método de Pago *</label>
+                <select id="campoMetodoPago" class="form-select" required>
+                  <option value="" disabled selected>Selecciona método de pago...</option>
+                  <option value="Efectivo">Efectivo</option>
+                  <option value="Tarjeta de Débito">Tarjeta de Débito</option>
+                  <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+                  <option value="Transferencia Bancaria">Transferencia Bancaria</option>
+                  <option value="Billetera Virtual">Billetera Virtual</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Descripción -->
+            <div class="mb-1">
+              <label for="campoDescripcion" class="form-label small fw-semibold text-secondary">Descripción (Opcional)</label>
+              <textarea id="campoDescripcion" class="form-control" rows="2" placeholder="Detalles u observaciones opcionales..."></textarea>
+            </div>
+
+          </div>
+
+          <div class="modal-footer border-top py-2 px-3">
+            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" id="btnGuardarGasto" class="btn btn-sm btn-primary">
+              <i class="fa-solid fa-plus me-1"></i> Añadir Gasto
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: GESTIÓN DE PRESUPUESTO (VER MÁS, EDITAR, SUMAR Y RESTAR) -->
+  <!-- ========================================================================= -->
+  <div class="modal fade" id="modalPresupuesto" tabindex="-1" aria-labelledby="tituloModalPresupuesto" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+        
+        <div class="modal-header border-bottom py-2.5 px-3">
+          <h6 class="modal-title fw-bold text-body" id="tituloModalPresupuesto">
+            <i class="fa-solid fa-bullseye text-primary me-2"></i>Gestión de Presupuesto Mensual
+          </h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body p-3 p-sm-4">
+          
+          <!-- Resumen de Estado Actual -->
+          <div class="p-3 mb-3 bg-body-secondary rounded-3 border">
+            <div class="row g-2 text-center">
+              <div class="col-4 border-end">
+                <small class="text-secondary d-block" style="font-size: 0.68rem;">Presupuesto</small>
+                <div id="modalPresupuestoActual" class="fw-bold fs-6 text-body my-0.5">$0,00</div>
+                <small class="text-secondary" style="font-size: 0.65rem;">Límite total</small>
+              </div>
+              <div class="col-4 border-end">
+                <small class="text-secondary d-block" style="font-size: 0.68rem;">Gastado</small>
+                <div id="modalPresupuestoTotal" class="fw-bold fs-6 text-danger my-0.5">$0,00</div>
+                <small id="modalPresupuestoPorcentaje" class="badge bg-secondary-subtle text-secondary rounded-pill" style="font-size: 0.65rem;">0%</small>
+              </div>
+              <div class="col-4">
+                <small class="text-secondary d-block" style="font-size: 0.68rem;">Disponible</small>
+                <div id="modalPresupuestoSaldo" class="fw-bold fs-6 text-success my-0.5">$0,00</div>
+                <small class="text-success" style="font-size: 0.65rem;">Saldo restante</small>
+              </div>
+            </div>
+            <div class="progress mt-2.5" style="height: 6px;">
+              <div id="modalPresupuestoBarra" class="progress-bar bg-success" role="progressbar" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- Selector de Pestañas: Fijar / Sumar / Restar -->
+          <ul class="nav nav-pills nav-fill mb-3 bg-body-tertiary p-1 rounded-3 border" id="pillsPresupuestoTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active py-1.5 px-2 small fw-semibold" id="pills-fijar-tab" data-bs-toggle="pill" data-bs-target="#pills-fijar" type="button" role="tab" aria-selected="true">
+                <i class="fa-solid fa-pen-to-square me-1"></i>Fijar Nuevo
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link py-1.5 px-2 small fw-semibold text-success" id="pills-sumar-tab" data-bs-toggle="pill" data-bs-target="#pills-sumar" type="button" role="tab" aria-selected="false">
+                <i class="fa-solid fa-plus me-1"></i>Sumar
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link py-1.5 px-2 small fw-semibold text-danger" id="pills-restar-tab" data-bs-toggle="pill" data-bs-target="#pills-restar" type="button" role="tab" aria-selected="false">
+                <i class="fa-solid fa-minus me-1"></i>Restar
+              </button>
+            </li>
+          </ul>
+
+          <!-- Contenido de las Pestañas -->
+          <div class="tab-content" id="pillsPresupuestoTabContent">
+            
+            <!-- 1. FIJAR / EDITAR NUEVO PRESUPUESTO -->
+            <div class="tab-pane fade show active" id="pills-fijar" role="tabpanel" aria-labelledby="pills-fijar-tab">
+              <form id="formFijarPresupuesto">
+                <div class="mb-3">
+                  <label for="inputFijarPresupuesto" class="form-label small fw-semibold text-secondary">
+                    Nuevo monto de presupuesto mensual ($ ARS) *
+                  </label>
+                  <input type="number" id="inputFijarPresupuesto" class="form-control" placeholder="Ej: 250000" min="0" step="1000" required>
+                  <small class="text-secondary" style="font-size: 0.72rem;">Reemplazará el límite mensual actual.</small>
+                </div>
+                <div class="d-flex justify-content-end gap-2">
+                  <button type="submit" class="btn btn-sm btn-primary px-3 shadow-sm">
+                    <i class="fa-solid fa-check me-1"></i> Fijar Presupuesto
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- 2. SUMAR AL PRESUPUESTO -->
+            <div class="tab-pane fade" id="pills-sumar" role="tabpanel" aria-labelledby="pills-sumar-tab">
+              <form id="formSumarPresupuesto">
+                <div class="mb-2">
+                  <label for="inputSumarPresupuesto" class="form-label small fw-semibold text-secondary">
+                    Monto a sumar ($ ARS) *
+                  </label>
+                  <input type="number" id="inputSumarPresupuesto" class="form-control" placeholder="Ej: 20000" min="1" step="500" required>
+                </div>
+                <!-- Botones de incremento rápido -->
+                <div class="d-flex gap-1.5 mb-3 flex-wrap">
+                  <button type="button" class="btn btn-xs btn-outline-success py-1 px-2 small btn-quick-sumar" data-monto="5000" style="font-size: 0.72rem;">+$5.000</button>
+                  <button type="button" class="btn btn-xs btn-outline-success py-1 px-2 small btn-quick-sumar" data-monto="10000" style="font-size: 0.72rem;">+$10.000</button>
+                  <button type="button" class="btn btn-xs btn-outline-success py-1 px-2 small btn-quick-sumar" data-monto="25000" style="font-size: 0.72rem;">+$25.000</button>
+                  <button type="button" class="btn btn-xs btn-outline-success py-1 px-2 small btn-quick-sumar" data-monto="50000" style="font-size: 0.72rem;">+$50.000</button>
+                </div>
+                <div class="d-flex justify-content-end gap-2">
+                  <button type="submit" class="btn btn-sm btn-success text-white px-3 shadow-sm">
+                    <i class="fa-solid fa-plus me-1"></i> Sumar al Presupuesto
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- 3. RESTAR DEL PRESUPUESTO -->
+            <div class="tab-pane fade" id="pills-restar" role="tabpanel" aria-labelledby="pills-restar-tab">
+              <form id="formRestarPresupuesto">
+                <div class="mb-2">
+                  <label for="inputRestarPresupuesto" class="form-label small fw-semibold text-secondary">
+                    Monto a restar ($ ARS) *
+                  </label>
+                  <input type="number" id="inputRestarPresupuesto" class="form-control" placeholder="Ej: 10000" min="1" step="500" required>
+                </div>
+                <!-- Botones de decremento rápido -->
+                <div class="d-flex gap-1.5 mb-3 flex-wrap">
+                  <button type="button" class="btn btn-xs btn-outline-danger py-1 px-2 small btn-quick-restar" data-monto="5000" style="font-size: 0.72rem;">-$5.000</button>
+                  <button type="button" class="btn btn-xs btn-outline-danger py-1 px-2 small btn-quick-restar" data-monto="10000" style="font-size: 0.72rem;">-$10.000</button>
+                  <button type="button" class="btn btn-xs btn-outline-danger py-1 px-2 small btn-quick-restar" data-monto="25000" style="font-size: 0.72rem;">-$25.000</button>
+                  <button type="button" class="btn btn-xs btn-outline-danger py-1 px-2 small btn-quick-restar" data-monto="50000" style="font-size: 0.72rem;">-$50.000</button>
+                </div>
+                <div class="d-flex justify-content-end gap-2">
+                  <button type="submit" class="btn btn-sm btn-danger px-3 shadow-sm">
+                    <i class="fa-solid fa-minus me-1"></i> Restar del Presupuesto
+                  </button>
+                </div>
+              </form>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="modal-footer border-top py-2 px-3">
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: CONFIRMACIÓN DE ACCIONES (ELIMINAR / MODIFICAR) -->
+  <!-- ========================================================================= -->
+  <div class="modal fade" id="modalConfirmacion" tabindex="-1" aria-labelledby="confirmaTitulo" aria-hidden="true" style="z-index: 1085;">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content border-0 shadow-lg text-center p-3">
+        <div class="modal-body p-2">
+          <div class="mb-3">
+            <i id="confirmaIcono" class="fa-solid fa-triangle-exclamation text-danger" style="font-size: 2.4rem;"></i>
+          </div>
+          <h6 class="fw-bold mb-2 text-body" id="confirmaTitulo">¿Estás seguro?</h6>
+          <p class="text-secondary small mb-3" id="confirmaMensaje" style="font-size: 0.8rem;"></p>
+          <div class="d-flex justify-content-center gap-2">
+            <button type="button" class="btn btn-sm btn-secondary px-3" data-bs-dismiss="modal" id="btnConfirmaCancelar">Cancelar</button>
+            <button type="button" class="btn btn-sm btn-danger px-3 shadow-sm" id="btnConfirmaAceptar">Confirmar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENEDOR DE TOASTS -->
+  <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;"></div>
+
+  <!-- FOOTER -->
+  <footer class="border-top py-3 mt-auto bg-body">
+    <div class="container-xl text-center text-secondary small" style="font-size: 0.75rem;">
+      <span>Gestor de Gastos Personales &copy; 2026</span>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Script Modular -->
+  <script type="module" src="js/app.js"></script>
+
+</body>
+</html>

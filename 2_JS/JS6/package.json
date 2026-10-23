@@ -1,0 +1,17 @@
+{
+  "name": "ahorcado-profesional",
+  "version": "1.0.0",
+  "description": "Juego del Ahorcado basado en estándar V2.0 (ES Modules)",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.9.7"
+  }
+}
