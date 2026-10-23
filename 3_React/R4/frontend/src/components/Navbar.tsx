@@ -20,7 +20,6 @@ const navItems = [
   { id: 'projects', label: 'Proyectos' },
   { id: 'experience', label: 'Experiencia' },
   { id: 'achievements', label: 'Logros' },
-  { id: 'guestbook', label: 'Visitas' },
   { id: 'contact', label: 'Contacto' },
 ];
 

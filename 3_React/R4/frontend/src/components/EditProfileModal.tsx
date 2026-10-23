@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { X, Save, User, Mail, MapPin, Briefcase, FileText, Sparkles } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './BrandIcons';
 import type { Profile } from '../types/portfolio';
+import { useConfirm } from '../context/ConfirmContext';
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -12,6 +13,7 @@ interface EditProfileModalProps {
 
 export function EditProfileModal({ isOpen, onClose, profile, onSave }: EditProfileModalProps) {
   const [formData, setFormData] = useState<Profile>(profile);
+  const confirm = useConfirm();
 
   useEffect(() => {
     setFormData(profile);
@@ -42,10 +44,18 @@ export function EditProfileModal({ isOpen, onClose, profile, onSave }: EditProfi
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
-    onClose();
+    const ok = await confirm({
+      title: '¿Guardar datos del perfil?',
+      message: '¿Estás seguro de que deseas actualizar la información de tu perfil?',
+      variant: 'info',
+      confirmText: 'Guardar Perfil'
+    });
+    if (ok) {
+      onSave(formData);
+      onClose();
+    }
   };
 
   return (

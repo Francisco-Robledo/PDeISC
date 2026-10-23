@@ -10,7 +10,6 @@ import {
   Sparkles, 
   Briefcase, 
   Award, 
-  MessageSquare, 
   Check 
 } from 'lucide-react';
 import type { PortfolioData, Profile, Project, Skill, Experience, Achievement } from '../types/portfolio';
@@ -33,9 +32,8 @@ interface MasterContentModalProps {
   onSaveAchievement: (ach: Achievement) => void;
   onAddAchievement: (ach: Achievement) => void;
   onDeleteAchievement: (id: number) => void;
-  onDeleteGuestbookEntry: (id: number) => void;
   onPersistToStorage: () => void;
-  initialTab?: 'profile' | 'projects' | 'skills' | 'experience' | 'achievements' | 'guestbook';
+  initialTab?: 'profile' | 'projects' | 'skills' | 'experience' | 'achievements';
 }
 
 export function MasterContentModal({
@@ -55,11 +53,10 @@ export function MasterContentModal({
   onSaveAchievement,
   onAddAchievement,
   onDeleteAchievement,
-  onDeleteGuestbookEntry,
   onPersistToStorage,
   initialTab = 'profile'
 }: MasterContentModalProps) {
-  const [activeTab, setActiveTab] = useState<'profile' | 'projects' | 'skills' | 'experience' | 'achievements' | 'guestbook'>(initialTab);
+  const [activeTab, setActiveTab] = useState<'profile' | 'projects' | 'skills' | 'experience' | 'achievements'>(initialTab);
   const confirm = useConfirm();
   const [profileForm, setProfileForm] = useState<Profile>(data.profile);
   const [editingProjectId, setEditingProjectId] = useState<number | null>(null);
@@ -129,21 +126,45 @@ export function MasterContentModal({
   if (!isOpen) return null;
 
   // Handle Profile Save
-  const handleProfileSubmit = (e: React.FormEvent) => {
+  const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSaveProfile(profileForm);
-    onPersistToStorage();
+    const ok = await confirm({
+      title: '¿Guardar datos del perfil?',
+      message: '¿Estás seguro de que deseas actualizar la información de tu perfil?',
+      variant: 'info',
+      confirmText: 'Guardar Perfil'
+    });
+    if (ok) {
+      onSaveProfile(profileForm);
+      onPersistToStorage();
+    }
   };
 
   // Handle Project Save
-  const handleSaveProjectForm = (project: Project) => {
-    onSaveProject(project);
-    setEditingProjectId(null);
-    onPersistToStorage();
+  const handleSaveProjectForm = async (project: Project) => {
+    const ok = await confirm({
+      title: '¿Guardar cambios del proyecto?',
+      message: `¿Estás seguro de que deseas guardar los cambios en "${project.title}"?`,
+      variant: 'info',
+      confirmText: 'Guardar Proyecto'
+    });
+    if (ok) {
+      onSaveProject(project);
+      setEditingProjectId(null);
+      onPersistToStorage();
+    }
   };
 
-  const handleCreateNewProject = (e: React.FormEvent) => {
+  const handleCreateNewProject = async (e: React.FormEvent) => {
     e.preventDefault();
+    const ok = await confirm({
+      title: '¿Crear nuevo proyecto?',
+      message: `¿Estás seguro de agregar "${editingProjectForm.title || 'Nuevo Proyecto'}" al portafolio?`,
+      variant: 'info',
+      confirmText: 'Crear Proyecto'
+    });
+    if (!ok) return;
+
     const newProj: Project = {
       id: Date.now(),
       title: editingProjectForm.title || 'Nuevo Proyecto',
@@ -168,9 +189,17 @@ export function MasterContentModal({
   };
 
   // Handle Skill Add
-  const handleAddSkillSubmit = (e: React.FormEvent) => {
+  const handleAddSkillSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newSkillForm.name) return;
+    const ok = await confirm({
+      title: '¿Agregar nueva habilidad?',
+      message: `¿Estás seguro de registrar la habilidad "${newSkillForm.name}"?`,
+      variant: 'info',
+      confirmText: 'Agregar Habilidad'
+    });
+    if (!ok) return;
+
     const skill: Skill = {
       id: Date.now(),
       name: newSkillForm.name,
@@ -193,9 +222,17 @@ export function MasterContentModal({
   };
 
   // Handle Experience Add
-  const handleAddExperienceSubmit = (e: React.FormEvent) => {
+  const handleAddExperienceSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newExpForm.role || !newExpForm.company) return;
+    const ok = await confirm({
+      title: '¿Agregar experiencia?',
+      message: `¿Estás seguro de registrar "${newExpForm.role}" en "${newExpForm.company}"?`,
+      variant: 'info',
+      confirmText: 'Agregar Experiencia'
+    });
+    if (!ok) return;
+
     const exp: Experience = {
       id: Date.now(),
       role: newExpForm.role,
@@ -220,9 +257,17 @@ export function MasterContentModal({
   };
 
   // Handle Achievement Add
-  const handleAddAchievementSubmit = (e: React.FormEvent) => {
+  const handleAddAchievementSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newAchForm.title) return;
+    const ok = await confirm({
+      title: '¿Agregar logro o certificación?',
+      message: `¿Estás seguro de registrar "${newAchForm.title}"?`,
+      variant: 'info',
+      confirmText: 'Agregar Logro'
+    });
+    if (!ok) return;
+
     const ach: Achievement = {
       id: Date.now(),
       title: newAchForm.title,
@@ -286,7 +331,6 @@ export function MasterContentModal({
             { id: 'skills', label: 'Habilidades', icon: Sparkles, count: data.skills.length },
             { id: 'experience', label: 'Experiencia', icon: Briefcase, count: data.experience.length },
             { id: 'achievements', label: 'Logros', icon: Award, count: data.achievements.length },
-            { id: 'guestbook', label: 'Visitas', icon: MessageSquare, count: data.guestbook.length },
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -1119,53 +1163,7 @@ export function MasterContentModal({
             </div>
           )}
 
-          {/* TAB 6: LIBRO DE VISITAS */}
-          {activeTab === 'guestbook' && (
-            <div className="space-y-4 max-w-4xl mx-auto">
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Moderación del Libro de Visitas. Puedes eliminar entradas de prueba o mensajes spam.
-              </p>
-              <div className="space-y-2.5">
-                {data.guestbook.map((entry) => (
-                  <div
-                    key={entry.id}
-                    className="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-start justify-between gap-3"
-                  >
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-bold text-xs text-slate-900 dark:text-white">{entry.name}</span>
-                        {entry.role_or_company && (
-                          <span className="text-[10px] text-slate-400">({entry.role_or_company})</span>
-                        )}
-                        {entry.created_at && (
-                          <span className="text-[10px] text-slate-400">• {new Date(entry.created_at).toLocaleDateString()}</span>
-                        )}
-                      </div>
-                      <p className="text-xs text-slate-600 dark:text-slate-300 italic">"{entry.message}"</p>
-                    </div>
-                    <button
-                      onClick={async () => {
-                        const ok = await confirm({
-                          title: '¿Eliminar mensaje de visita?',
-                          message: `¿Deseas eliminar el mensaje de "${entry.name}"?`,
-                          variant: 'danger',
-                          confirmText: 'Eliminar Mensaje'
-                        });
-                        if (ok) {
-                          onDeleteGuestbookEntry(entry.id);
-                          onPersistToStorage();
-                        }
-                      }}
-                      className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 rounded-lg transition"
-                      title="Eliminar entrada de visita"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+
 
         </div>
 

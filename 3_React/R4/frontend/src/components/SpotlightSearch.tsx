@@ -51,7 +51,6 @@ export const SpotlightSearch: React.FC<SpotlightSearchProps> = ({
       { id: 'sec-projects', title: 'Galería de Proyectos Desarrollados', category: 'Navegación', type: 'section', action: () => scrollToSection('projects') },
       { id: 'sec-experience', title: 'Trayectoria & Experiencia Profesional', category: 'Navegación', type: 'section', action: () => scrollToSection('experience') },
       { id: 'sec-achievements', title: 'Certificaciones & Logros Obtenidos', category: 'Navegación', type: 'section', action: () => scrollToSection('achievements') },
-      { id: 'sec-guestbook', title: 'Libro de Visitas & Testimonios', category: 'Navegación', type: 'section', action: () => scrollToSection('guestbook') },
       { id: 'sec-contact', title: 'Contactar a Francisco (Enviar Mensaje)', category: 'Navegación', type: 'section', action: () => scrollToSection('contact') }
     );
 

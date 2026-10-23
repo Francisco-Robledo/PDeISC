@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { MessageSquare, Send, CheckCircle2, AlertCircle } from 'lucide-react';
 import type { GuestbookEntry } from '../types/portfolio';
 import { useConfetti } from '../hooks/useConfetti';
+import { useConfirm } from '../context/ConfirmContext';
 
 interface GuestbookSectionProps {
   entries: GuestbookEntry[];
@@ -17,6 +18,7 @@ export const GuestbookSection: React.FC<GuestbookSectionProps> = ({ entries, onA
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   const { triggerGoogleConfetti } = useConfetti();
+  const confirm = useConfirm();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,6 +26,14 @@ export const GuestbookSection: React.FC<GuestbookSectionProps> = ({ entries, onA
       setFeedback({ type: 'error', text: 'Por favor ingresa al menos tu nombre y un mensaje.' });
       return;
     }
+
+    const ok = await confirm({
+      title: '¿Publicar mensaje?',
+      message: '¿Estás seguro de que deseas publicar este mensaje en el libro de visitas?',
+      variant: 'info',
+      confirmText: 'Publicar Mensaje'
+    });
+    if (!ok) return;
 
     try {
       setSubmitting(true);

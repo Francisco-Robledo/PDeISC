@@ -14,7 +14,6 @@ import { SkillsSection } from './components/SkillsSection';
 import { ProjectsSection } from './components/ProjectsSection';
 import { ExperienceTimeline } from './components/ExperienceTimeline';
 import { AchievementsSection } from './components/AchievementsSection';
-import { GuestbookSection } from './components/GuestbookSection';
 import { ContactSection } from './components/ContactSection';
 import { ProjectModal } from './components/ProjectModal';
 import { Footer } from './components/Footer';
@@ -32,7 +31,6 @@ const sectionIds = [
   'projects',
   'experience',
   'achievements',
-  'guestbook',
   'contact'
 ];
 
@@ -54,13 +52,11 @@ export function App() {
     updateAchievement,
     addAchievement,
     deleteAchievement,
-    deleteGuestbookEntry,
     saveChanges,
     discardChanges,
     resetDefaults,
     hasUnsavedChanges,
     likeProject,
-    addGuestbookEntry,
     submitContact
   } = usePortfolioData();
   const { isOpen: isSpotlightOpen, openSpotlight, closeSpotlight } = useSpotlight();
@@ -73,7 +69,7 @@ export function App() {
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
   const [isMasterModalOpen, setIsMasterModalOpen] = useState(false);
-  const [masterModalTab, setMasterModalTab] = useState<'profile' | 'projects' | 'skills' | 'experience' | 'achievements' | 'guestbook'>('profile');
+  const [masterModalTab, setMasterModalTab] = useState<'profile' | 'projects' | 'skills' | 'experience' | 'achievements'>('profile');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Toast Helper
@@ -97,19 +93,35 @@ export function App() {
     showToast('¡Modo de edición activado! Puedes modificar los datos directamente en la página.');
   }, [showToast]);
 
-  const handleSaveChanges = useCallback(() => {
+  const handleSaveChanges = useCallback(async () => {
+    const ok = await confirm({
+      title: '¿Confirmar guardado?',
+      message: '¿Estás seguro de que deseas guardar permanentemente todos los cambios en el portafolio?',
+      variant: 'info',
+      confirmText: 'Guardar Cambios'
+    });
+    if (!ok) return;
+
     const success = saveChanges();
     if (success) {
       showToast('¡Cambios guardados con éxito en el navegador!');
     } else {
       showToast('Error al guardar cambios en localStorage');
     }
-  }, [saveChanges, showToast]);
+  }, [confirm, saveChanges, showToast]);
 
-  const handleDiscardChanges = useCallback(() => {
+  const handleDiscardChanges = useCallback(async () => {
+    const ok = await confirm({
+      title: '¿Descartar cambios?',
+      message: '¿Estás seguro de que deseas descartar todas las modificaciones no guardadas?',
+      variant: 'warning',
+      confirmText: 'Descartar Cambios'
+    });
+    if (!ok) return;
+
     discardChanges();
     showToast('Cambios no guardados revertidos al último guardado');
-  }, [discardChanges, showToast]);
+  }, [confirm, discardChanges, showToast]);
 
   const handleResetDefaults = useCallback(async () => {
     const ok = await confirm({
@@ -259,11 +271,6 @@ export function App() {
           }}
         />
 
-        <GuestbookSection
-          entries={data.guestbook}
-          onAddEntry={addGuestbookEntry}
-        />
-
         <ContactSection
           profile={data.profile}
           onSubmitContact={submitContact}
@@ -367,10 +374,6 @@ export function App() {
         onDeleteAchievement={(id) => {
           deleteAchievement(id);
           showToast('Logro eliminado');
-        }}
-        onDeleteGuestbookEntry={(id) => {
-          deleteGuestbookEntry(id);
-          showToast('Mensaje de visita eliminado');
         }}
         onPersistToStorage={handleSaveChanges}
       />
